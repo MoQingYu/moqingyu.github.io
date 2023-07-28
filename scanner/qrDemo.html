@@ -98,15 +98,15 @@
         highlightCodeOutline: true,
     });
 
-    // const updateFlashAvailability = () => {
-    //     scanner.hasFlash().then(hasFlash => {
-    //         camHasFlash.textContent = hasFlash;
-    //         flashToggle.style.display = hasFlash ? 'inline-block' : 'none';
-    //     });
-    // };
+    const updateFlashAvailability = () => {
+        scanner.hasFlash().then(hasFlash => {
+            // camHasFlash.textContent = hasFlash;
+            // flashToggle.style.display = hasFlash ? 'inline-block' : 'none';
+        });
+    };
 
     scanner.start().then(() => {
-        // updateFlashAvailability();
+        updateFlashAvailability();
         // List cameras after the scanner started to avoid listCamera's stream and the scanner's stream being requested
         // at the same time which can result in listCamera's unconstrained stream also being offered to the scanner.
         // Note that we can also start the scanner after listCameras, we just have it this way around in the demo to
