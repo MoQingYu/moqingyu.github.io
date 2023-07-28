@@ -50,9 +50,9 @@
 <br> -->
 <b>Detected QR code: </b>
 <span id="cam-qr-result">None</span>
-<br>
+<!-- <br>
 <b>Last detected at: </b>
-<span id="cam-qr-result-timestamp"></span>
+<span id="cam-qr-result-timestamp"></span> -->
 <!-- <br>
 <button id="start-button">Start</button>
 <button id="stop-button">Stop</button>
@@ -74,17 +74,17 @@
     // const flashToggle = document.getElementById('flash-toggle');
     // const flashState = document.getElementById('flash-state');
     const camQrResult = document.getElementById('cam-qr-result');
-    const camQrResultTimestamp = document.getElementById('cam-qr-result-timestamp');
+    // const camQrResultTimestamp = document.getElementById('cam-qr-result-timestamp');
     // const fileSelector = document.getElementById('file-selector');
     // const fileQrResult = document.getElementById('file-qr-result');
 
     function setResult(label, result) {
         console.log(result.data);
         label.textContent = result.data;
-        camQrResultTimestamp.textContent = new Date().toString();
-        label.style.color = 'teal';
-        clearTimeout(label.highlightTimeout);
-        label.highlightTimeout = setTimeout(() => label.style.color = 'inherit', 100);
+        // camQrResultTimestamp.textContent = new Date().toString();
+        // label.style.color = 'teal';
+        // clearTimeout(label.highlightTimeout);
+        // label.highlightTimeout = setTimeout(() => label.style.color = 'inherit', 100);
     }
 
     // ####### Web Cam Scanning #######
@@ -98,25 +98,25 @@
         highlightCodeOutline: true,
     });
 
-    const updateFlashAvailability = () => {
-        scanner.hasFlash().then(hasFlash => {
-            // camHasFlash.textContent = hasFlash;
-            // flashToggle.style.display = hasFlash ? 'inline-block' : 'none';
-        });
-    };
+    // const updateFlashAvailability = () => {
+    //     scanner.hasFlash().then(hasFlash => {
+    //         camHasFlash.textContent = hasFlash;
+    //         flashToggle.style.display = hasFlash ? 'inline-block' : 'none';
+    //     });
+    // };
 
     scanner.start().then(() => {
-        updateFlashAvailability();
+        // updateFlashAvailability();
         // List cameras after the scanner started to avoid listCamera's stream and the scanner's stream being requested
         // at the same time which can result in listCamera's unconstrained stream also being offered to the scanner.
         // Note that we can also start the scanner after listCameras, we just have it this way around in the demo to
         // start the scanner earlier.
-        // QrScanner.listCameras(true).then(cameras => cameras.forEach(camera => {
-        //     const option = document.createElement('option');
-        //     option.value = camera.id;
-        //     option.text = camera.label;
-        //     camList.add(option);
-        // }));
+        QrScanner.listCameras(true).then(cameras => cameras.forEach(camera => {
+            // const option = document.createElement('option');
+            // option.value = camera.id;
+            // option.text = camera.label;
+            // camList.add(option);
+        }));
     });
 
     // QrScanner.hasCamera().then(hasCamera => camHasCamera.textContent = hasCamera);
