@@ -64,8 +64,10 @@
         );
         
 
-        scanner.start().then(() => {
-            
+        scanner.start().then((res) => {
+            alert(res, 1)
+        }).catch(err=> {
+            alert(err, 2)
         });
     </script>
 
