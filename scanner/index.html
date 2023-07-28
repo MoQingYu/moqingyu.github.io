@@ -52,11 +52,11 @@
     const scanner = new QrScanner(
         video, 
         result => {
-            if(!scannerList.has(res.data)) {
+            if(!scannerList.has(result.data)) {
                 const newChild = document.createElement("div");
                 newChild.className = "scanner-res-item";
-                newChild.textContent = res.data;
-                scannerList.add(res.data);
+                newChild.textContent = result.data;
+                scannerList.add(result.data);
                 list.appendChild(newChild)
             }
         },
