@@ -68,13 +68,13 @@
 
     const video = document.getElementById('qr-video');
     const videoContainer = document.getElementById('video-container');
-    // const camHasCamera = document.getElementById('cam-has-camera');
+    const camHasCamera = document.getElementById('cam-has-camera');
     // const camList = document.getElementById('cam-list');
     // const camHasFlash = document.getElementById('cam-has-flash');
     // const flashToggle = document.getElementById('flash-toggle');
     // const flashState = document.getElementById('flash-state');
     const camQrResult = document.getElementById('cam-qr-result');
-    // const camQrResultTimestamp = document.getElementById('cam-qr-result-timestamp');
+    const camQrResultTimestamp = document.getElementById('cam-qr-result-timestamp');
     // const fileSelector = document.getElementById('file-selector');
     // const fileQrResult = document.getElementById('file-qr-result');
 
@@ -98,15 +98,15 @@
         highlightCodeOutline: true,
     });
 
-    // const updateFlashAvailability = () => {
-    //     scanner.hasFlash().then(hasFlash => {
-    //         camHasFlash.textContent = hasFlash;
-    //         flashToggle.style.display = hasFlash ? 'inline-block' : 'none';
-    //     });
-    // };
+    const updateFlashAvailability = () => {
+        scanner.hasFlash().then(hasFlash => {
+            camHasFlash.textContent = hasFlash;
+            flashToggle.style.display = hasFlash ? 'inline-block' : 'none';
+        });
+    };
 
     scanner.start().then(() => {
-        // updateFlashAvailability();
+        updateFlashAvailability();
         // List cameras after the scanner started to avoid listCamera's stream and the scanner's stream being requested
         // at the same time which can result in listCamera's unconstrained stream also being offered to the scanner.
         // Note that we can also start the scanner after listCameras, we just have it this way around in the demo to
@@ -122,7 +122,7 @@
     QrScanner.hasCamera().then(hasCamera => camHasCamera.textContent = hasCamera);
 
     // // for debugging
-    // window.scanner = scanner;
+    window.scanner = scanner;
 
     // document.getElementById('scan-region-highlight-style-select').addEventListener('change', (e) => {
     //     videoContainer.className = e.target.value;
