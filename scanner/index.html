@@ -38,22 +38,29 @@
     <div id="container">
         <video id="qr-video"></video>
         <div id="scanner-res-list">
-            <div class="scanner-res-item" id="res-content">none</div>
-            <div class="scanner-res-item" id="err-content">none</div>
+
         </div>
     </div>
 
 </body>
 <script type="module">
     import QrScanner from "./js/qr-scanner.min.js";
-
+    let scannerList = new Set([]);
     const video = document.getElementById('qr-video');
-    const resEle = document.getElementById('res-content');
-    const errEle = document.getElementById('err-content');
+    const list = document.getElementById('scanner-res-list');
 
     const scanner = new QrScanner(
         video, 
-        result => resEle.textContent = result.data, 
+        result => {
+            if(scannerList.has(res.data)) {
+                return ;
+            }
+            const newChild = document.createElement("div");
+            newChild.className = "scanner-res-item";
+            newChild.textContent = res.data;
+            scannerList.add(res.data);
+            list.appendChild(newChild)
+        },
         {
             onDecodeError: error => {
                 errEle.textContent = error;
