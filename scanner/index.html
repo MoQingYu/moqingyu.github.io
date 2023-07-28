@@ -38,39 +38,33 @@
     <div id="container">
         <video id="qr-video"></video>
         <div id="scanner-res-list">
-            <div class="scanner-res-item">123456</div>
-            <div class="scanner-res-item">123456</div>
-            <div class="scanner-res-item">123456</div>
-            <div class="scanner-res-item">123456</div>
-            <div class="scanner-res-item">123456</div>
+            <div class="scanner-res-item" id="res-content">none</div>
+            <div class="scanner-res-item" id="err-content">none</div>
         </div>
     </div>
-    <script type="module">
-        import QrScanner from "./js/qr-scanner.min.js";
-
-        const video = document.getElementById('qr-video');
-
-        const scanner = new QrScanner(
-            video, 
-            result => alert(result), 
-            {
-                onDecodeError: error => {
-                    camQrResult.textContent = error;
-                    camQrResult.style.color = 'inherit';
-                },
-                highlightScanRegion: true,
-                highlightCodeOutline: true,
-            }
-        );
-        
-
-        scanner.start().then((res) => {
-            alert(res, 1)
-        }).catch(err=> {
-            alert(err, 2)
-        });
-    </script>
 
 </body>
+<script type="module">
+    import QrScanner from "./js/qr-scanner.min.js";
 
+    const video = document.getElementById('qr-video');
+    const resEle = document.getElementById('res-content');
+    const errEle = document.getElementById('err-content');
+
+    const scanner = new QrScanner(
+        video, 
+        result => resEle.textContent = result.data, 
+        {
+            onDecodeError: error => {
+                errEle.textContent = error;
+                errEle.style.color = 'inherit';
+            },
+            highlightScanRegion: true,
+            highlightCodeOutline: true,
+        }
+    );
+    
+
+    scanner.start();
+</script>
 </html>
