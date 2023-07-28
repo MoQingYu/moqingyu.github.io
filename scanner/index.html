@@ -52,14 +52,13 @@
     const scanner = new QrScanner(
         video, 
         result => {
-            if(scannerList.has(res.data)) {
-                return ;
+            if(!scannerList.has(res.data)) {
+                const newChild = document.createElement("div");
+                newChild.className = "scanner-res-item";
+                newChild.textContent = res.data;
+                scannerList.add(res.data);
+                list.appendChild(newChild)
             }
-            const newChild = document.createElement("div");
-            newChild.className = "scanner-res-item";
-            newChild.textContent = res.data;
-            scannerList.add(res.data);
-            list.appendChild(newChild)
         },
         {
             onDecodeError: error => {
