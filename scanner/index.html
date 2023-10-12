@@ -51,7 +51,7 @@
             <button id="close">关闭</button>
             <button id="open">开启</button>
         </div>
-        <div>version：1.0.4</div>
+        <div>version：1.0.5</div>
     </div>
 </body>
 <script type="module">
@@ -77,7 +77,7 @@
         let pending = false;
 
         function stop() {
-            scanner.stop();
+            scanner.destroy();
         }
 
         function start() {
@@ -101,9 +101,7 @@
             }
         );
         console.log(scanner)
-        scanner.start().then(() => {
-            scanner.scan();
-        }).catch(error => {
+        scanner.start().catch(error => {
             onError(error)
         });
     }
