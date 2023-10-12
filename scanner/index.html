@@ -13,7 +13,6 @@
         #container {
             width: 100vw;
             height: 100vh;
-            overflow: hidden;
         }
         #qr-video {
             width: 100%;
@@ -21,7 +20,6 @@
             object-fit: cover;
         }
         #scanner-res-list {
-            height: calc(100vh - 300px);
             padding: 12px;
             overflow-x: hidden;
             overflow-y: auto;
@@ -32,7 +30,10 @@
             border-radius: 8px;
             margin-bottom: 8px;
         }
-        .qr-error {
+        #qr-operation {
+            text-align: center;
+        }
+        #qr-error {
             color: red;
         }
     </style>
@@ -45,9 +46,11 @@
 
         </div>
         <div id="qr-error"></div>
+        <div id="qr-operation">
+            <button id="close">关闭</button>
+            <button id="open">开启</button>
+        </div>
     </div>
-    <button id="close">关闭</button>
-    <button id="open">开启</button>
 </body>
 <script type="module">
     import QrScanner from "./js/qr-scanner.min.js";
