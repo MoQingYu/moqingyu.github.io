@@ -32,6 +32,9 @@
             border-radius: 8px;
             margin-bottom: 8px;
         }
+        .qr-error {
+            color: red;
+        }
     </style>
 </head>
 
@@ -41,36 +44,64 @@
         <div id="scanner-res-list">
 
         </div>
+        <div id="qr-error"></div>
     </div>
-
+    <button id="close">关闭</button>
+    <button id="open">开启</button>
 </body>
 <script type="module">
     import QrScanner from "./js/qr-scanner.min.js";
     let scannerList = new Set([]);
+    let scanner = null;
     const video = document.getElementById('qr-video');
     const list = document.getElementById('scanner-res-list');
+    const errBox = document.getElementById('qr-error');
+    const close = document.getElementById('close');
+    const open = document.getElementById('open');
 
-    const scanner = new QrScanner(
-        video, 
-        result => {
-            if(!scannerList.has(result.data)) {
-                const newChild = document.createElement("div");
-                newChild.className = "scanner-res-item";
-                newChild.textContent = result.data;
-                scannerList.add(result.data);
-                list.appendChild(newChild)
-            }
-        },
-        {
-            onDecodeError: error => {
-                console.log(error)
+    close.addEventListener('click', () => {
+        scanner.stop();
+    })
+
+    open.addEventListener('click', () => {
+        loadInfo();
+    })
+
+    function scanQrCode(onSuccess, onError) {
+        scanner = new QrScanner(
+            video, 
+            result => {
+                onSuccess(result, scanner);
             },
-            highlightScanRegion: true,
-            highlightCodeOutline: true,
-        }
-    );
-    
+            {
+                onDecodeError: error => {
+                    onError(error)
+                },
+                highlightScanRegion: true,
+                highlightCodeOutline: true,
+            }
+        );
+        scanner.start().catch(error => {
+            onError(error)
+        });
+    }
 
-    scanner.start();
+    function loadInfo() {
+        scanQrCode((result, scanner) => {
+            setTimeout(() => {
+                if(!scannerList.has(result.data)) {
+                    const newChild = document.createElement("div");
+                    newChild.className = "scanner-res-item";
+                    newChild.textContent = result.data;
+                    scannerList.add(result.data);
+                    list.appendChild(newChild)
+                }   
+            })
+        }, (error) => {
+            console.log(error)
+            errBox.innerText = error.toSting()
+        })
+    }
+
 </script>
 </html>
