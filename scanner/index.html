@@ -42,6 +42,7 @@
 <body>
     <div id="container">
         <video id="qr-video"></video>
+        <div id="qr-status"></div>
         <div id="scanner-res-list">
 
         </div>
@@ -61,6 +62,7 @@
     const errBox = document.getElementById('qr-error');
     const close = document.getElementById('close');
     const open = document.getElementById('open');
+    const status = document.getElementById('qr-status');
 
     close.addEventListener('click', () => {
         scanner.stop();
@@ -91,20 +93,22 @@
 
     function loadInfo() {
         scanQrCode((result, scanner) => {
+            status.innerText = "扫描成功,正在处理..."
             setTimeout(() => {
+                status.innerText = "正在处理扫描结果中..."
                 if(!scannerList.has(result.data)) {
                     const newChild = document.createElement("div");
                     newChild.className = "scanner-res-item";
                     newChild.textContent = result.data;
                     scannerList.add(result.data);
                     list.appendChild(newChild)
+                    status.innerText = "处理成功"
                 }   
             })
         }, (error) => {
             console.log(error)
-            errBox.innerText = error.toSting()
+            errBox.innerText = error
         })
     }
-
 </script>
 </html>
