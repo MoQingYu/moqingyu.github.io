@@ -73,10 +73,23 @@
     })
 
     function scanQrCode(onSuccess, onError) {
+        let pending = false;
+
+        function stop() {
+            scanner.stop();
+        }
+
+        function start() {
+            pending = false;
+            scanner.start();
+        }
+
         scanner = new QrScanner(
             video, 
             result => {
-                onSuccess(result, scanner);
+                if(pending) return;
+                pending = true;
+                onSuccess(result, start, stop);
             },
             {
                 onDecodeError: error => {
@@ -92,7 +105,7 @@
     }
 
     function loadInfo() {
-        scanQrCode((result, scanner) => {
+        scanQrCode((result, start) => {
             status.innerText = "扫描成功,正在处理..."
             setTimeout(() => {
                 status.innerText = "正在处理扫描结果中..."
@@ -103,8 +116,12 @@
                     scannerList.add(result.data);
                     list.appendChild(newChild)
                     status.innerText = "处理成功"
+                    setTimeout(() => {
+                        status.innerText = ""
+                        start();
+                    }, 1000)
                 }   
-            })
+            }, 1000)
         }, (error) => {
             console.log(error)
             errBox.innerText = error
