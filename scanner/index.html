@@ -51,7 +51,7 @@
             <button id="close">关闭</button>
             <button id="open">开启</button>
         </div>
-        <div>version：1.0.2</div>
+        <div>version：1.0.3</div>
     </div>
 </body>
 <script type="module">
@@ -106,7 +106,7 @@
     }
 
     function loadInfo() {
-        scanQrCode((result, start) => {
+        scanQrCode((result, start, stop) => {
             status.innerText = "扫描成功,正在处理..."
             setTimeout(() => {
                 status.innerText = "正在处理扫描结果中..."
@@ -122,11 +122,13 @@
                         start();
                     }, 1000)
                 } else {
-                    status.innerText = "已经扫描过了"
-                    setTimeout(() => {
-                        status.innerText = ""
+                    const r = window.confirm("已经扫描过了")
+                    if(r) {
                         start();
-                    }, 1000)
+                    } else {
+                        status.innerText = ""
+                        stop();
+                    }
                 }
             }, 1000)
         }, (error) => {
