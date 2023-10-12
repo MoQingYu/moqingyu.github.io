@@ -101,9 +101,11 @@
             }
         );
         console.log(scanner)
-        // scanner.start().catch(error => {
-        //     onError(error)
-        // });
+        scanner.start().then(() => {
+            scanner.scan();
+        }).catch(error => {
+            onError(error)
+        });
     }
 
     function loadInfo() {
