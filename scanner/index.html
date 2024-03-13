@@ -51,6 +51,9 @@
             <button id="close">关闭</button>
             <button id="open">开启</button>
         </div>
+        <div id="c">
+
+        </div>
         <div>version：1.0.5</div>
     </div>
 </body>
@@ -84,6 +87,16 @@
             pending = false;
             scanner.start();
         }
+
+        QrScanner.listCameras().then((cameras) => {
+            if (cameras.length >= 1) {
+                let str = ""
+                cameras.forEach((camera) => {
+                    str += `${camera.label} ${camera.id} \n`
+                })
+                alert(str);
+            }
+        })
 
         scanner = new QrScanner(
             video, 
