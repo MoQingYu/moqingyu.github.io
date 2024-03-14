@@ -184,7 +184,13 @@
                 videoTrack.forEach((item) => {
                     const info = item.getSettings();
                     str += `${info.deviceId} && ${info.width}\n\n`
-                    item.stop();
+                    try {
+                        
+                        item.stop();
+                        stream.removeTrack(item);
+                    } catch (error) {
+                        
+                    }
                 })
 
                 alert(str);
