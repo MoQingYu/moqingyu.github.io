@@ -182,7 +182,7 @@
                 const videoTrack = stream.getVideoTracks();
                 let str = ""
                 videoTrack.forEach((item) => {
-                    const info = videoTrack.getSettings();
+                    const info = item.getSettings();
                     str += `${info.deviceId} && ${info.width}\n\n`
                 })
 
