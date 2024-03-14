@@ -120,38 +120,40 @@
                     alert(error + " &&& error")
                 });
                 
-            } catch (e) {}
+            } catch (e) {
+                alert(e + " &&& error1")
+            }
         }
 
-        QrScanner.listCameras().then((cameras) => {
-            if (cameras.length >= 1) {
-                let str = ""
-                cameras.forEach((camera) => {
-                    str += `${camera.label} ${camera.id} \n`
-                })
-                alert(str);
-            }
-        })
+        // QrScanner.listCameras().then((cameras) => {
+        //     if (cameras.length >= 1) {
+        //         let str = ""
+        //         cameras.forEach((camera) => {
+        //             str += `${camera.label} ${camera.id} \n`
+        //         })
+        //         alert(str);
+        //     }
+        // })
 
-        scanner = new QrScanner(
-            video, 
-            result => {
-                if(pending) return;
-                pending = true;
-                onSuccess(result, start, stop);
-            },
-            {
-                onDecodeError: error => {
-                    onError(error)
-                },
-                highlightScanRegion: true,
-                highlightCodeOutline: true,
-            }
-        );
-        console.log(scanner)
-        scanner.start().catch(error => {
-            onError(error)
-        });
+        // scanner = new QrScanner(
+        //     video, 
+        //     result => {
+        //         if(pending) return;
+        //         pending = true;
+        //         onSuccess(result, start, stop);
+        //     },
+        //     {
+        //         onDecodeError: error => {
+        //             onError(error)
+        //         },
+        //         highlightScanRegion: true,
+        //         highlightCodeOutline: true,
+        //     }
+        // );
+        // console.log(scanner)
+        // scanner.start().catch(error => {
+        //     onError(error)
+        // });
     }
 
     function loadInfo() {
