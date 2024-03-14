@@ -125,67 +125,102 @@
             }
         }
 
-        // QrScanner.listCameras().then((cameras) => {
-        //     if (cameras.length >= 1) {
-        //         let str = ""
-        //         cameras.forEach((camera) => {
-        //             str += `${camera.label} ${camera.id} \n`
-        //         })
-        //         alert(str);
-        //     }
-        // })
+        QrScanner.listCameras().then((cameras) => {
+            if (cameras.length >= 1) {
+                let str = ""
+                cameras.forEach((camera) => {
+                    str += `${camera.label} ${camera.id} \n`
+                })
+                alert(str);
+            }
+        })
 
-        // scanner = new QrScanner(
-        //     video, 
-        //     result => {
-        //         if(pending) return;
-        //         pending = true;
-        //         onSuccess(result, start, stop);
-        //     },
-        //     {
-        //         onDecodeError: error => {
-        //             onError(error)
-        //         },
-        //         highlightScanRegion: true,
-        //         highlightCodeOutline: true,
-        //     }
-        // );
-        // console.log(scanner)
-        // scanner.start().catch(error => {
-        //     onError(error)
-        // });
+        scanner = new QrScanner(
+            video, 
+            result => {
+                if(pending) return;
+                pending = true;
+                onSuccess(result, start, stop);
+            },
+            {
+                onDecodeError: error => {
+                    onError(error)
+                },
+                highlightScanRegion: true,
+                highlightCodeOutline: true,
+            }
+        );
+        console.log(scanner)
+        scanner.start().catch(error => {
+            onError(error)
+        });
     }
 
     function loadInfo() {
-        scanQrCode((result, start, stop) => {
-            status.innerText = "扫描成功,正在处理..."
-            setTimeout(() => {
-                status.innerText = "正在处理扫描结果中..."
-                if(!scannerList.has(result.data)) {
-                    const newChild = document.createElement("div");
-                    newChild.className = "scanner-res-item";
-                    newChild.textContent = result.data;
-                    scannerList.add(result.data);
-                    list.appendChild(newChild)
-                    status.innerText = "处理成功"
-                    setTimeout(() => {
-                        status.innerText = ""
-                        start();
-                    }, 1000)
-                } else {
-                    const r = window.confirm("已经扫描过了")
-                    if(r) {
-                        start();
-                    } else {
-                        status.innerText = ""
-                        stop();
-                    }
-                }
-            }, 1000)
-        }, (error) => {
-            console.log(error)
-            errBox.innerText = error
-        })
+        const preferenceType = /^(environment|user)$/.test("environment")
+            ? 'facingMode'
+            : 'deviceId';
+        const constraintsWithoutCamera = [{
+            width: { min: 1024 }
+        }, {
+            width: { min: 768 }
+        }, {}];
+        const constraintsWithCamera = constraintsWithoutCamera.map((constraint) => Object.assign({}, constraint, {
+            [preferenceType]: { exact: "environment" },
+        }));
+
+        for (const constraints of [...constraintsWithCamera, ...constraintsWithoutCamera]) {
+            try {
+                navigator.mediaDevices.getUserMedia({ video: constraints, audio: false })({ 
+                    video: {
+                        width: { min: 1 },
+                        height: { min: 1 }
+                    }, 
+                    audio: false
+                }).then((stream) =>{
+                    const list = stream.getVideoTracks();
+                    let str = ""
+                    list.forEach((item) => {
+                        str += `${item.label} ${item.id}  ${item.kind}\n`
+                    })
+                    alert(str + " &&& success")
+                }).catch((error) => {
+                    alert(error + " &&& error")
+                });
+                
+            } catch (e) {
+                alert(e + " &&& error1")
+            }
+        }
+        // scanQrCode((result, start, stop) => {
+        //     status.innerText = "扫描成功,正在处理..."
+        //     setTimeout(() => {
+        //         status.innerText = "正在处理扫描结果中..."
+        //         if(!scannerList.has(result.data)) {
+        //             const newChild = document.createElement("div");
+        //             newChild.className = "scanner-res-item";
+        //             newChild.textContent = result.data;
+        //             scannerList.add(result.data);
+        //             list.appendChild(newChild)
+        //             status.innerText = "处理成功"
+        //             setTimeout(() => {
+        //                 status.innerText = ""
+        //                 start();
+        //             }, 1000)
+        //         } else {
+        //             const r = window.confirm("已经扫描过了")
+        //             if(r) {
+        //                 start();
+        //             } else {
+        //                 status.innerText = ""
+        //                 stop();
+        //             }
+        //         }
+        //     }, 1000)
+        // }, (error) => {
+        //     console.log(error)
+        //     errBox.innerText = error
+        // })
     }
 </script>
 </html>
