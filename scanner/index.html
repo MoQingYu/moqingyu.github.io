@@ -89,18 +89,39 @@
             scanner.start();
         }
 
-        navigator.mediaDevices.getUserMedia({ 
-            video: {
-                width: { min: 10 },
-                height: { min: 100 }
-            }, 
-            audio: false}).then((stream) =>{
-           console.log(stream)
-            alert(JSON.stringify(stream.getVideoTracks()) + " &&& success")
-        }).catch((error) => {
-            alert(error + " &&& error")
-        });
+        const preferenceType = /^(environment|user)$/.test(environment)
+            ? 'facingMode'
+            : 'deviceId';
+        const constraintsWithoutCamera = [{
+            width: { min: 1024 }
+        }, {
+            width: { min: 768 }
+        }, {}];
+        const constraintsWithCamera = constraintsWithoutCamera.map((constraint) => Object.assign({}, constraint, {
+            [preferenceType]: { exact: "environment" },
+        }));
 
+        for (const constraints of [...constraintsWithCamera, ...constraintsWithoutCamera]) {
+            try {
+                navigator.mediaDevices.getUserMedia({ video: constraints, audio: false })({ 
+                    video: {
+                        width: { min: 1 },
+                        height: { min: 1 }
+                    }, 
+                    audio: false
+                }).then((stream) =>{
+                    const list = stream.getVideoTracks();
+                    let str = ""
+                    list.forEach((item) => {
+                        str += `${item.label} ${item.id}  ${item.kind}\n`
+                    })
+                    alert(str + " &&& success")
+                }).catch((error) => {
+                    alert(error + " &&& error")
+                });
+                
+            } catch (e) {}
+        }
 
         QrScanner.listCameras().then((cameras) => {
             if (cameras.length >= 1) {
