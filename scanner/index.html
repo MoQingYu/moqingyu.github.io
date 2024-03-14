@@ -173,24 +173,27 @@
                 })
             navigator.mediaDevices.getUserMedia({ 
                 video: {
-                    width: { min: 1 },
+                    width: { min: 720 },
                     facingMode: { exact: "environment" }
-                }, audio: false 
+                }, 
+                audio: false 
             }).then((stream) =>{
                 alert(stream.id + " &&& success");
-                // scanner = new QrScanner(
-                //     video, 
-                //     result => {
-                //     },
-                //     {
-                //         onDecodeError: error => {
-                //         },
-                //         highlightScanRegion: true,
-                //         highlightCodeOutline: true,
-                //         preferredCamera: stream.id
-                //     }
-                // );
-                // scanner.start()
+                const videoTrack = stream.getVideoTracks()[0];
+                const settings = videoTrack.getSettings();
+                scanner = new QrScanner(
+                    video, 
+                    result => {
+                    },
+                    {
+                        onDecodeError: error => {
+                        },
+                        highlightScanRegion: true,
+                        highlightCodeOutline: true,
+                        preferredCamera: settings.deviceId
+                    }
+                );
+                scanner.start()
             })
             
         } catch (e) {
