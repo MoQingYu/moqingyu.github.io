@@ -51,7 +51,7 @@
             <button id="close">关闭</button>
             <button id="open">开启</button>
         </div>
-        <div id="c">
+        <div id="cameras">
 
         </div>
         <div>version：1.0.5</div>
@@ -67,6 +67,7 @@
     const close = document.getElementById('close');
     const open = document.getElementById('open');
     const status = document.getElementById('qr-status');
+    const cameras = document.getElementById("cameras")
 
     close.addEventListener('click', () => {
         scanner.destroy();
@@ -87,6 +88,20 @@
             pending = false;
             scanner.start();
         }
+
+        navigator.mediaDevices.enumerateDevices()
+            .then(function(devices) {
+                let str = "";
+
+                devices.forEach(function(device) {
+                    str += `${device.kind} ${device.label} ${device.deviceId} \n`
+                })
+                alert(str);
+            })
+            .catch(function(err) {
+                console.error("Error getting devices: ", err);
+            });
+
 
         QrScanner.listCameras().then((cameras) => {
             if (cameras.length >= 1) {
