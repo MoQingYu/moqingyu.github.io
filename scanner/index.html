@@ -94,7 +94,9 @@
                 let str = "";
 
                 devices.forEach(function(device) {
-                    str += `${device.kind} ${device.label} ${device.deviceId} \n`
+                    if (device.kind === "videoinput") {
+                        str += `${device.label}：：： ${device.deviceId} \n`
+                    }
                 })
                 alert(str);
             })
