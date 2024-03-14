@@ -165,18 +165,24 @@
                     facingMode: { exact: "environment" }
                 }, audio: false 
             }).then((stream) =>{
-                const list = stream.getVideoTracks();
-                let str = ""
-                list.forEach((item) => {
-                    str += `${item.label} ${item.id}  ${item.kind}\n`
-                })
-                alert(str + " &&& success")
-            }).catch((error) => {
-                alert(error + " &&& error")
-            });
+                const item = stream.getVideoTracks()[0];
+                scanner = new QrScanner(
+                    video, 
+                    result => {
+                    },
+                    {
+                        onDecodeError: error => {
+                        },
+                        highlightScanRegion: true,
+                        highlightCodeOutline: true,
+                        preferredCamera: item.id
+                    }
+                );
+                scanner.start()
+            })
             
         } catch (e) {
-            alert(e + " &&& error1")
+            errBox.innerText = e.message;
         }
     }
 </script>
