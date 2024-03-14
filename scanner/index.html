@@ -161,9 +161,9 @@
             ? 'facingMode'
             : 'deviceId';
         const constraintsWithoutCamera = [{
-            width: { min: 1024 }
+            width: { min: 1 }
         }, {
-            width: { min: 768 }
+            width: { min: 1 }
         }, {}];
         const constraintsWithCamera = constraintsWithoutCamera.map((constraint) => Object.assign({}, constraint, {
             [preferenceType]: { exact: "environment" },
@@ -171,13 +171,7 @@
 
         for (const constraints of [...constraintsWithCamera, ...constraintsWithoutCamera]) {
             try {
-                navigator.mediaDevices.getUserMedia({ video: constraints, audio: false })({ 
-                    video: {
-                        width: { min: 1 },
-                        height: { min: 1 }
-                    }, 
-                    audio: false
-                }).then((stream) =>{
+                navigator.mediaDevices.getUserMedia({ video: constraints, audio: false }).then((stream) =>{
                     const list = stream.getVideoTracks();
                     let str = ""
                     list.forEach((item) => {
