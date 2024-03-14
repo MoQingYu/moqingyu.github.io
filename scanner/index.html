@@ -160,17 +160,6 @@
 
         
         try {
-            navigator.mediaDevices.enumerateDevices()
-                .then(function(devices) {
-                    let str = "";
-    
-                    devices.forEach(function(device) {
-                        if (device.kind === "videoinput") {
-                            str += `${device.label}：：： ${device.deviceId} \n`
-                        }
-                    })
-                    alert(str);
-                })
             navigator.mediaDevices.getUserMedia({ 
                 video: {
                     width: { min: 720 },
