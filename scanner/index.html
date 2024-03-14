@@ -89,7 +89,7 @@
             scanner.start();
         }
 
-        const preferenceType = /^(environment|user)$/.test(environment)
+        const preferenceType = /^(environment|user)$/.test("environment")
             ? 'facingMode'
             : 'deviceId';
         const constraintsWithoutCamera = [{
