@@ -91,7 +91,7 @@
 
         navigator.mediaDevices.getUserMedia({ video: true, audio: false }).then((stream) =>{
            console.log(stream)
-            alert(stream)
+            alert(JSON.stringify(stream))
         }).catch((error) => {
             alert(error)
         });
