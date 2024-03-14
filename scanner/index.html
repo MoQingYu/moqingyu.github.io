@@ -158,26 +158,39 @@
 
     function loadInfo() {
 
+        
         try {
+            navigator.mediaDevices.enumerateDevices()
+                .then(function(devices) {
+                    let str = "";
+    
+                    devices.forEach(function(device) {
+                        if (device.kind === "videoinput") {
+                            str += `${device.label}：：： ${device.deviceId} \n`
+                        }
+                    })
+                    alert(str);
+                })
             navigator.mediaDevices.getUserMedia({ 
                 video: {
                     width: { min: 1 },
                     facingMode: { exact: "environment" }
                 }, audio: false 
             }).then((stream) =>{
-                scanner = new QrScanner(
-                    video, 
-                    result => {
-                    },
-                    {
-                        onDecodeError: error => {
-                        },
-                        highlightScanRegion: true,
-                        highlightCodeOutline: true,
-                        preferredCamera: stream.id
-                    }
-                );
-                scanner.start()
+                alert(stream.id + " &&& success");
+                // scanner = new QrScanner(
+                //     video, 
+                //     result => {
+                //     },
+                //     {
+                //         onDecodeError: error => {
+                //         },
+                //         highlightScanRegion: true,
+                //         highlightCodeOutline: true,
+                //         preferredCamera: stream.id
+                //     }
+                // );
+                // scanner.start()
             })
             
         } catch (e) {
