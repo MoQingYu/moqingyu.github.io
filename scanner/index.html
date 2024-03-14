@@ -173,7 +173,7 @@
                 })
             navigator.mediaDevices.getUserMedia({ 
                 video: {
-                    width: { min: 720 },
+                    width: { min: 480 },
                     facingMode: { exact: "environment" }
                 }, 
                 audio: false 
@@ -184,6 +184,7 @@
                 videoTrack.forEach((item) => {
                     const info = item.getSettings();
                     str += `${info.deviceId} && ${info.width}\n\n`
+                    item.stop();
                 })
 
                 alert(str);
