@@ -160,6 +160,17 @@
 
         
         try {
+            navigator.mediaDevices.enumerateDevices()
+                .then(function(devices) {
+                    let str = "";
+    
+                    devices.forEach(function(device) {
+                        if (device.kind === "videoinput") {
+                            str += `${device.label}：：： ${device.deviceId} \n`
+                        }
+                    })
+                    alert(str);
+                })
             navigator.mediaDevices.getUserMedia({ 
                 video: {
                     width: { min: 720 },
@@ -167,22 +178,29 @@
                 }, 
                 audio: false 
             }).then((stream) =>{
-                alert(stream.id + " &&& success");
-                const videoTrack = stream.getVideoTracks()[0];
-                const settings = videoTrack.getSettings();
-                scanner = new QrScanner(
-                    video, 
-                    result => {
-                    },
-                    {
-                        onDecodeError: error => {
-                        },
-                        highlightScanRegion: true,
-                        highlightCodeOutline: true,
-                        preferredCamera: settings.deviceId
-                    }
-                );
-                scanner.start()
+                // alert(stream.id + " &&& success");
+                const videoTrack = stream.getVideoTracks();
+                let str = ""
+                videoTrack.forEach((item) => {
+                    const info = videoTrack.getSettings();
+                    str += `${info.deviceId} && ${info.width}\n\n`
+                })
+
+                alert(str);
+
+                // scanner = new QrScanner(
+                //     video, 
+                //     result => {
+                //     },
+                //     {
+                //         onDecodeError: error => {
+                //         },
+                //         highlightScanRegion: true,
+                //         highlightCodeOutline: true,
+                //         preferredCamera: settings.deviceId
+                //     }
+                // );
+                // scanner.start()
             })
             
         } catch (e) {
