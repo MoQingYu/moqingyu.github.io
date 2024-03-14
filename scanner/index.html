@@ -165,7 +165,6 @@
                     facingMode: { exact: "environment" }
                 }, audio: false 
             }).then((stream) =>{
-                const item = stream.getVideoTracks()[0];
                 scanner = new QrScanner(
                     video, 
                     result => {
@@ -175,7 +174,7 @@
                         },
                         highlightScanRegion: true,
                         highlightCodeOutline: true,
-                        preferredCamera: item.id
+                        preferredCamera: stream.id
                     }
                 );
                 scanner.start()
