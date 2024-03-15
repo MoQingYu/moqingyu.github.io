@@ -33,10 +33,7 @@
 
         var html5QrcodeScanner = new Html5QrcodeScanner(
             "qr-reader", { 
-                fps: 60,
-                qrbox: { width: 250, height: 250 },
-                aspectRatio: 1,
-                cameraFacingMode: "environment"
+                fps: 60
             });
         html5QrcodeScanner.render(onScanSuccess);
     });
