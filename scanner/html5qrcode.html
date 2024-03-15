@@ -32,7 +32,12 @@
         }
 
         var html5QrcodeScanner = new Html5QrcodeScanner(
-            "qr-reader", { fps: 10 });
+            "qr-reader", { 
+                fps: 60,
+                qrbox: { width: 250, height: 250 },
+                aspectRatio: 1,
+                cameraFacingMode: "environment"
+            });
         html5QrcodeScanner.render(onScanSuccess);
     });
 </script>
