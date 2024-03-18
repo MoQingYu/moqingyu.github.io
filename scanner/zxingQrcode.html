@@ -70,38 +70,31 @@
       const codeReader = new ZXing.BrowserMultiFormatReader()
       console.log('ZXing code reader initialized')
       console.log('Video element', codeReader)
-      codeReader.listVideoInputDevices()
-        .then((videoInputDevices) => {
-          const sourceSelect = document.getElementById('sourceSelect')
-          selectedDeviceId = videoInputDevices[0].deviceId
-          if (videoInputDevices.length >= 1) {
-            videoInputDevices.forEach((element) => {
-              const sourceOption = document.createElement('option')
-              sourceOption.text = element.label
-              sourceOption.value = element.deviceId
-              sourceSelect.appendChild(sourceOption)
-            })
-
-            sourceSelect.onchange = () => {
-              selectedDeviceId = sourceSelect.value;
-            };
-
-            const sourceSelectPanel = document.getElementById('sourceSelectPanel')
-            sourceSelectPanel.style.display = 'block'
-          }
+      
+       const videoElement = document.getElementById('video')
 
           document.getElementById('startButton').addEventListener('click', () => {
-            codeReader.decodeFromVideoDevice(selectedDeviceId, 'video', (result, err) => {
-              if (result) {
-                console.log(result)
-                document.getElementById('result').textContent = result.text
-              }
-              if (err && !(err instanceof ZXing.NotFoundException)) {
-                console.error(err)
-                document.getElementById('result').textContent = err
-              }
+            navigator.mediaDevices.getUserMedia({
+            audio: false,
+            video: {
+                facingMode: { exact: "environment" },
+                aspectRatio: 0.75,
+                width: {min: 720, ideal: 1280, max: 1920},
+            }
+        }).then((stream) => {
+            videoElement.srcObject = stream;
+            videoElement.play();
+            codeReader.decodeFromVideoElement(videoElement).then((result) => {
+              document.getElementById('result').textContent = result.text
+              console.log('Found QR code!', result)
+            }).catch((err) => {
+              document.getElementById('result').textContent = err
+              console.error(err)
             })
             console.log(`Started continous decode from camera with id ${selectedDeviceId}`)
+          })
+          .catch((err) => {
+            console.error(err)
           })
 
           document.getElementById('resetButton').addEventListener('click', () => {
@@ -110,9 +103,6 @@
             console.log('Reset.')
           })
 
-        })
-        .catch((err) => {
-          console.error(err)
         })
     })
   </script>
