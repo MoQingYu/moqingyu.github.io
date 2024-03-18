@@ -2,7 +2,11 @@
 
 <head>
     <title>Html-Qrcode Demo</title>
-
+    <style>
+        .qr-reader-results {
+            font-size: 20px;
+        }
+    </style>
 <body>
     <div id="qr-reader" style="width:100%"></div>
     <div id="qr-reader-results"></div>
@@ -68,6 +72,7 @@
                         {deviceId: info.deviceId},
                         {
                             fps: 10,
+                            qrBox: { width: 250, height: 250},
                             videoConstraints: {
                                 deviceId: info.deviceId,
                                 width: {min: 640, ideal: 1280, max: 1920}
