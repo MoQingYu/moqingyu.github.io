@@ -96,12 +96,11 @@
         // })
         var html5QrcodeScanner = new Html5QrcodeScanner(
             "qr-reader", { 
-                fps: 60,
+                fps: 10,
                 aspectRatio: 1.333334,
                 videoConstraints: {
                     facingMode: "environment",
-                    width: {min: 640},
-                    height: {min: 480}
+                    width: {min: 720}
                 }
             });
         console.log(html5QrcodeScanner);
