@@ -1,6 +1,8 @@
 <html>
+
 <head>
     <title>Html-Qrcode Demo</title>
+
 <body>
     <div id="qr-reader" style="width:100%"></div>
     <div id="qr-reader-results"></div>
@@ -27,7 +29,7 @@
                 lastResult = decodedText;
                 resultContainer.innerHTML += `<div>[${countResults}] - ${decodedText}</div>`;
                 // Handle on success condition with the decoded message.
-                console.log(`Scan result ${decodedText}`, decodedResult);   
+                console.log(`Scan result ${decodedText}`, decodedResult);
             }
         }
 
@@ -39,7 +41,7 @@
         // }).then((stream) => {
         //     const track = stream.getVideoTracks();
         //     alert(track.length)
-            
+
         // })
 
 
@@ -90,21 +92,23 @@
         //             });
         //         html5QrcodeScanner.render(onScanSuccess);
         //     }
-            
+
         // }).catch((error) => {
         //     alert(error)
         // })
-        alert("start")
+        alert("1.0")
         var html5QrcodeScanner = new Html5QrcodeScanner(
-            "qr-reader", { 
-                fps: 10,
-                aspectRatio: 1.333334,
-                videoConstraints: {
-                    width: {min: 1080}
-                }
-            });
+            "qr-reader", {
+            fps: 60,
+            aspectRatio: 1.333334,
+            videoConstraints: {
+                width: { min: 720, max: 1920 },
+                height: { min: 540, ideal: 720, max: 1080 }
+            }
+        });
         html5QrcodeScanner.render(onScanSuccess);
     });
 </script>
 </head>
+
 </html>
