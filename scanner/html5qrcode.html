@@ -94,6 +94,7 @@
         // }).catch((error) => {
         //     alert(error)
         // })
+        alert("start")
         var html5QrcodeScanner = new Html5QrcodeScanner(
             "qr-reader", { 
                 fps: 10,
@@ -102,7 +103,6 @@
                     width: {min: 1080}
                 }
             });
-        console.log(html5QrcodeScanner);
         html5QrcodeScanner.render(onScanSuccess);
     });
 </script>
