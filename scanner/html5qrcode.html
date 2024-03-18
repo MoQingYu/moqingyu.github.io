@@ -115,15 +115,7 @@
                     height: {min: 480, ideal: 720, max: 1080}
                 }
             },
-            (code) => {
-                // 在处理完上一次的内容之前,禁止触发onSuccess
-                if (isPending) {
-                    return
-                }
-                isPending = true
-                enqueueSnackbar("扫码成功:" + code, {variant: "success"})
-                onSuccess?.({data: code}, reStartScanner, stopScanner)
-            },
+            onScanSuccess,
             undefined
         )
         // var html5QrcodeScanner = new Html5QrcodeScanner(
