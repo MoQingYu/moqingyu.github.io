@@ -54,7 +54,7 @@
             audio: false,
             video: {
                 facingMode: { exact: "environment" },
-                aspectRatio: 0.75,
+                aspectRatio: 1,
                 width: {min: 720, ideal: 1280, max: 1920},
             }
         }).then((stream) => {
@@ -74,7 +74,7 @@
                         {deviceId: info.deviceId},
                         {
                             fps: 30,
-                            aspectRatio: 0.75,
+                            aspectRatio: 1,
                             // qrbox: { width: 250, height: 250},
                             videoConstraints: {
                                 deviceId: info.deviceId,
