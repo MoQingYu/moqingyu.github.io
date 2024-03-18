@@ -31,16 +31,16 @@
             }
         }
 
-        navigator.mediaDevices.getUserMedia({
-            audio: false,
-            video: {
-                facingMode: "environment"
-            }
-        }).then((stream) => {
-            const track = stream.getVideoTracks();
-            alert(track.length)
+        // navigator.mediaDevices.getUserMedia({
+        //     audio: false,
+        //     video: {
+        //         facingMode: "environment"
+        //     }
+        // }).then((stream) => {
+        //     const track = stream.getVideoTracks();
+        //     alert(track.length)
             
-        })
+        // })
 
 
         // navigator.mediaDevices.getUserMedia({
