@@ -69,6 +69,7 @@
       let selectedDeviceId;
       const codeReader = new ZXing.BrowserMultiFormatReader()
       console.log('ZXing code reader initialized')
+      console.log('Video element', codeReader)
       codeReader.listVideoInputDevices()
         .then((videoInputDevices) => {
           const sourceSelect = document.getElementById('sourceSelect')
