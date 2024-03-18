@@ -41,13 +41,14 @@
         })
         
         scanner.start(
-            {
-                facingMode: "environment",
-                width: {min: 640, ideal: 1280, max: 1920}
-            },
+            {facingMode: "environment"},
             {
                 fps: 10,
                 aspectRatio: 1.333334,
+                videoConstraints: {
+                    width: {min: 640, ideal: 1280, max: 1920},
+                    height: {min: 480, ideal: 720, max: 1080}
+                }
             },
             (code) => {
                 // 在处理完上一次的内容之前,禁止触发onSuccess
