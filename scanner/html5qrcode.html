@@ -35,7 +35,7 @@
             audio: false,
             video: {
                 facingMode: "environment",
-                width: {min: 640, ideal: 1280, max: 1920}
+                width: {min: 720, ideal: 1280, max: 1920}
             }
         }).then((stream) => {
             const track = stream.getVideoTracks()[0];
@@ -54,8 +54,8 @@
                         aspectRatio: 1.333334,
                         videoConstraints: {
                             deviceId: info.deviceId,
-                            width: {min: 640, ideal: 1280, max: 1920},
-                            height: {min: 480, ideal: 720, max: 1080}
+                            width: {min: 720, ideal: 1280, max: 1920},
+                            height: {min: 540, ideal: 720, max: 1080}
                         }
                     },
                     onScanSuccess,
