@@ -37,16 +37,26 @@
             // }
         }
 
-        // navigator.mediaDevices.getUserMedia({
-        //     audio: false,
-        //     video: {
-        //         facingMode: "environment"
-        //     }
-        // }).then((stream) => {
-        //     const track = stream.getVideoTracks();
-        //     alert(track.length)
+        const scanner = new Html5Qrcode("qr-reader", {
+            verbose: false,
+            experimentalFeatures: {
+                useBarCodeDetectorIfSupported: true
+            }
+        })
 
-        // })
+        console.log("scanner", scanner)
+
+        return ;
+
+        navigator.mediaDevices.getUserMedia({
+            audio: false,
+            video: {
+                facingMode: "environment"
+            }
+        }).then((stream) => {
+            const track = stream.getVideoTracks();
+            alert(track.length)
+        })
 
 
         navigator.mediaDevices.getUserMedia({
@@ -68,6 +78,8 @@
                             useBarCodeDetectorIfSupported: true
                         }
                     })
+
+                    
                     
                     scanner.start(
                         {deviceId: info.deviceId},

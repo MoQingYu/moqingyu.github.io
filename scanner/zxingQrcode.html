@@ -84,14 +84,25 @@
         }).then((stream) => {
             videoElement.srcObject = stream;
             videoElement.play();
-            codeReader.decodeFromVideoElement(videoElement).then((result) => {
-              document.getElementById('result').textContent = result.text
-              console.log('Found QR code!', result)
-            }).catch((err) => {
-              document.getElementById('result').textContent = err
-              console.error(err)
+            // codeReader.decodeFromVideoElement(videoElement).then((result) => {
+            //   document.getElementById('result').textContent = result.text
+            //   console.log('Found QR code!', result)
+            // }).catch((err) => {
+            //   document.getElementById('result').textContent = err
+            //   console.error(err)
+            // })
+            const track = stream.getVideoTracks()[0];
+            const info = track.getSettings();
+            codeReader.decodeFromVideoDevice(info.deviceId, 'video', (result, err) => {
+              if (result) {
+                console.log(result)
+                document.getElementById('result').textContent = result.text
+              }
+              if (err && !(err instanceof ZXing.NotFoundException)) {
+                console.error(err)
+                document.getElementById('result').textContent = err
+              }
             })
-            console.log(`Started continous decode from camera with id ${selectedDeviceId}`)
           })
           .catch((err) => {
             console.error(err)
