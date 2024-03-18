@@ -45,79 +45,80 @@
         // })
 
 
-        // navigator.mediaDevices.getUserMedia({
-        //     audio: false,
-        //     video: {
-        //         facingMode: { exact: "environment" },
-        //         width: {min: 640, max: 1920}
-        //     }
-        // }).then((stream) => {
-        //     const track = stream.getVideoTracks()[0];
-        //     const info = track.getSettings();
-        //     if(info.deviceId) {
-        //         try {
-        //             alert(`width: ${info.width}\n\n height: ${info.height}\n\n deviceId: ${info.deviceId} \n\n facingMode: ${info.facingMode}`);
-        //             const scanner = new Html5Qrcode("qr-reader", {
-        //                 verbose: false,
-        //                 experimentalFeatures: {
-        //                     useBarCodeDetectorIfSupported: true
-        //                 }
-        //             })
-                    
-        //             scanner.start(
-        //                 {deviceId: info.deviceId},
-        //                 {
-        //                     fps: 10,
-        //                     aspectRatio: 1.333334,
-        //                     videoConstraints: {
-        //                         deviceId: info.deviceId,
-        //                         width: {min: 640, ideal: 1280, max: 1920},
-        //                         height: {min: 480, ideal: 720, max: 1080}
-        //                     }
-        //                 },
-        //                 onScanSuccess,
-        //                 undefined
-        //             )
-        //         } catch (error) {
-        //             alert(error)
-        //         }
-        //         var html5QrcodeScanner = new Html5QrcodeScanner(
-        //             "qr-reader", { 
-        //                 fps: 60,
-        //                 aspectRatio: 1.333334,
-        //                 videoConstraints: {
-        //                     deviceId: info.deviceId,
-        //                     width: {min: 720, max: 1920},
-        //                     height: {min: 540, ideal: 720, max: 1080}
-        //                 }
-        //             });
-        //         html5QrcodeScanner.render(onScanSuccess);
-        //     }
-        // }).catch((error) => {
-        //     alert(error)
-        // })
-        alert("start1")
-        const scanner = new Html5Qrcode("qr-reader", {
-            verbose: false,
-            experimentalFeatures: {
-                useBarCodeDetectorIfSupported: true
-            }
-        })
-        
-        scanner.start(
-            {facingMode: "environment"},
-            {
-                fps: 10,
+        navigator.mediaDevices.getUserMedia({
+            audio: false,
+            video: {
+                facingMode: { exact: "environment" },
                 aspectRatio: 1.333334,
-                videoConstraints: {
-                    facingMode: "environment",
-                    width: {min: 640, ideal: 1280, max: 1920},
-                    // height: {min: 480, ideal: 720, max: 1080}
+                width: {min: 640, ideal: 1280, max: 1920},
+            }
+        }).then((stream) => {
+            const track = stream.getVideoTracks()[0];
+            const info = track.getSettings();
+            if(info.deviceId) {
+                try {
+                    alert(`width: ${info.width}\n\n height: ${info.height}\n\n deviceId: ${info.deviceId} \n\n facingMode: ${info.facingMode}`);
+                    const scanner = new Html5Qrcode("qr-reader", {
+                        verbose: false,
+                        experimentalFeatures: {
+                            useBarCodeDetectorIfSupported: true
+                        }
+                    })
+                    
+                    scanner.start(
+                        {deviceId: info.deviceId},
+                        {
+                            fps: 10,
+                            aspectRatio: 1.333334,
+                            videoConstraints: {
+                                deviceId: info.deviceId,
+                                width: {min: 640, ideal: 1280, max: 1920},
+                                height: {min: 480, ideal: 720, max: 1080}
+                            }
+                        },
+                        onScanSuccess,
+                        undefined
+                    )
+                } catch (error) {
+                    alert(error)
                 }
-            },
-            onScanSuccess,
-            undefined
-        )
+                // var html5QrcodeScanner = new Html5QrcodeScanner(
+                //     "qr-reader", { 
+                //         fps: 60,
+                //         aspectRatio: 1.333334,
+                //         videoConstraints: {
+                //             deviceId: info.deviceId,
+                //             width: {min: 720, max: 1920},
+                //             height: {min: 540, ideal: 720, max: 1080}
+                //         }
+                //     });
+                // html5QrcodeScanner.render(onScanSuccess);
+            }
+        }).catch((error) => {
+            alert(error)
+        })
+        // alert("start1")
+        // const scanner = new Html5Qrcode("qr-reader", {
+        //     verbose: false,
+        //     experimentalFeatures: {
+        //         useBarCodeDetectorIfSupported: true
+        //     }
+        // })
+        
+        // scanner.start(
+        //     {facingMode: "environment"},
+        //     {
+        //         fps: 10,
+        //         aspectRatio: 1.333334,
+        //         videoConstraints: {
+        //             facingMode: "environment",
+        //             width: {min: 640, ideal: 1280, max: 1920},
+        //             // height: {min: 480, ideal: 720, max: 1080}
+        //         }
+        //     },
+        //     onScanSuccess,
+        //     undefined
+        // )
 
         // var html5QrcodeScanner = new Html5QrcodeScanner(
         //     "qr-reader", {
