@@ -1,7 +1,6 @@
 <html>
 
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Html-Qrcode Demo</title>
     <style>
         .qr-reader-results {
@@ -29,13 +28,13 @@
         var resultContainer = document.getElementById('qr-reader-results');
         var lastResult, countResults = 0;
         function onScanSuccess(decodedText, decodedResult) {
-            if (decodedText !== lastResult) {
+            // if (decodedText !== lastResult) {
                 ++countResults;
                 lastResult = decodedText;
                 resultContainer.innerHTML += `<div>[${countResults}] - ${decodedText}</div>`;
                 // Handle on success condition with the decoded message.
                 console.log(`Scan result ${decodedText}`, decodedResult);
-            }
+            // }
         }
 
         // navigator.mediaDevices.getUserMedia({
