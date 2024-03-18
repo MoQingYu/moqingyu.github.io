@@ -47,7 +47,7 @@
             audio: false,
             video: {
                 facingMode: { exact: "environment" },
-                width: {min: 640, max: 1920}
+                width: {min: 720, ideal: 1080,  max: 1920}
             }
         }).then((stream) => {
             const track = stream.getVideoTracks()[0];
