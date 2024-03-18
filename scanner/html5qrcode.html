@@ -54,6 +54,7 @@
             const info = track.getSettings();
             if(info.deviceId) {
                 try {
+                    alert(`width: ${info.width}\n\n height: ${info.height}\n\n deviceId: ${info.deviceId}`)
                     const scanner = new Html5Qrcode("qr-reader", {
                         verbose: false,
                         experimentalFeatures: {
