@@ -61,12 +61,12 @@
                         }
                     })
                     scanner.start(
-                        { deviceId: { exact: cameraId} },
+                        { deviceId: { exact: deviceId} },
                         {
                             fps: 10,
                             aspectRatio: 1.333334,
                             videoConstraints: {
-                                deviceId: { exact: cameraId},
+                                deviceId: { exact: deviceId},
                                 width: {min: 720, ideal: 1280, max: 1920},
                                 height: {min: 540, ideal: 720, max: 1080}
                             }
