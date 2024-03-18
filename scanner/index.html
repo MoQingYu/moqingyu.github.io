@@ -170,7 +170,7 @@
                 // alert(stream.id + " &&& success");
                 const videoTrack = stream.getVideoTracks()[0];
                 const info = videoTrack.getSettings();
-                let str = `${info.deviceId} && ${info.width}\n\n`
+                let str = `${info.deviceId} && ${info.width} && ${info.height}\n\n`
                 try {
                     
                     info.stop();
