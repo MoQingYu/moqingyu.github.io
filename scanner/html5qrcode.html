@@ -33,8 +33,10 @@
 
         var html5QrcodeScanner = new Html5QrcodeScanner(
             "qr-reader", { 
-                fps: 60
+                fps: 60,
+                aspectRatio: 1.333334,
             });
+        console.log(html5QrcodeScanner);
         html5QrcodeScanner.render(onScanSuccess);
     });
 </script>
