@@ -49,7 +49,6 @@
             audio: false,
             video: {
                 facingMode: { exact: "environment" },
-                aspectRatio: 1.333334,
                 width: {min: 640, ideal: 1280, max: 1920},
             }
         }).then((stream) => {
@@ -69,7 +68,6 @@
                         {deviceId: info.deviceId},
                         {
                             fps: 10,
-                            aspectRatio: 1.333334,
                             videoConstraints: {
                                 deviceId: info.deviceId,
                                 width: {min: 640, ideal: 1280, max: 1920}
@@ -97,7 +95,7 @@
         }).catch((error) => {
             alert(error)
         })
-        
+
         // alert("start1")
         // const scanner = new Html5Qrcode("qr-reader", {
         //     verbose: false,
