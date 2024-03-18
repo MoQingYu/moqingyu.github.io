@@ -27,9 +27,11 @@
                 lastResult = decodedText;
                 resultContainer.innerHTML += `<div>[${countResults}] - ${decodedText}</div>`;
                 // Handle on success condition with the decoded message.
-                console.log(`Scan result ${decodedText}`, decodedResult);
+                console.log(`Scan result ${decodedText}`, decodedResult);   
             }
         }
+
+        console.log(Html5Qrcode)
 
         const scanner = new Html5Qrcode("qr-reader", {
             verbose: false,
@@ -40,8 +42,8 @@
         
         scanner.start(
             {
-                facingMode: "environment",
-                width: { min: 1080 }
+                // facingMode: "environment",
+                width: {min: 640, ideal: 1280, max: 1920}
             },
             {
                 fps: 10,
