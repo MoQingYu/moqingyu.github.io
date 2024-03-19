@@ -57,8 +57,9 @@
         const errorNode = document.getElementById('error-json');
 
         const config = {
-            // aspectRatio: 0.75,
+            aspectRatio: 0.75,
             // width: { min: 720, ideal: 1280, max: 1920 },
+            width: { min: 480, ideal: 720, max: 1280 },
         }
 
         navigator.mediaDevices.enumerateDevices()
@@ -106,6 +107,7 @@
                     infoNode.innerHTML = JSON.stringify(info, null, 2)
                     video.srcObject = stream;
                     video.play();
+
                 }).catch(err => {
                     errorNode.innerHTML = JSON.stringify(err, null, 2)
                 })
