@@ -115,7 +115,7 @@
         }).then((stream) => {
             const track = stream.getVideoTracks();
             const info = track[0].getSettings();
-            videoSelect.setAttribute('value', info.deviceId);
+            videoSelect.value = info.deviceId;
             infoNode.innerHTML = JSON.stringify(info, null, 2)
             video.srcObject = stream;
             video.play();
