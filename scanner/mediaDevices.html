@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>媒体查询</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>kind</th>
+                <th>label</th>
+                <th>mediaId</th>
+            </tr>
+        </thead>
+        <tbody id="video-list">
+        </tbody>
+    </table>
+    <script>
+        const videoList = document.getElementById('video-list');
+        navigator.mediaDevices.enumerateDevices()
+            .then(devices => {
+                devices.forEach(device => {
+                    if (device.kind === 'videoinput') {
+                        videoList.innerHTML += `
+                            <tr>
+                                <td>${device.kind}</td>
+                                <td>${device.label}</td>
+                                <td>${device.deviceId}</td>
+                            </tr>
+                        `
+                    }
+                })
+            })
+        navigator.mediaDevices.getUserMedia({
+            audio: false,
+            video: {
+                facingMode: "environment"
+            }
+        }).then((stream) => {
+            const track = stream.getVideoTracks();
+            alert(track.length)
+        })
+    </script>
+</body>
+</html>
