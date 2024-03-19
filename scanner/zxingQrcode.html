@@ -87,6 +87,7 @@
               videoElement.play();
             };
             codeReader.decodeFromVideoElement(videoElement).then((result) => {
+              alert(result.text);
               document.getElementById('result').textContent = result.text
               console.log('Found QR code!', result)
             }).catch((err) => {
