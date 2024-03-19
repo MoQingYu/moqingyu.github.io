@@ -38,7 +38,7 @@
       </div>
 
       <div>
-        <video id="video" width="100%" height="600px" style="border: 1px solid gray"></video>
+        <video id="video" width="100%" height="600px" style="border: 1px solid gray; object-fit: cover;"></video>
       </div>
 
       <div id="sourceSelectPanel" style="display:none">
@@ -83,7 +83,6 @@
             }
         }).then((stream) => {
             videoElement.srcObject = stream;
-            videoElement.play();
             // codeReader.decodeFromVideoElement(videoElement).then((result) => {
             //   document.getElementById('result').textContent = result.text
             //   console.log('Found QR code!', result)
@@ -91,6 +90,9 @@
             //   document.getElementById('result').textContent = err
             //   console.error(err)
             // })
+            videoElement.onloadedmetadata = function (e) {
+              videoElement.play();
+            };
             const track = stream.getVideoTracks()[0];
             const info = track.getSettings();
             codeReader.decodeFromVideoDevice(info.deviceId, 'video', (result, err) => {
