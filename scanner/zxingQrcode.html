@@ -73,6 +73,20 @@
       
        const videoElement = document.getElementById('video')
 
+       const run = () => {
+          codeReader.decodeFromVideoElement(videoElement).then((result) => {
+            alert(result.text);
+            document.getElementById('result').textContent = result.text
+            console.log('Found QR code!', result)
+            
+          }).catch((err) => {
+            document.getElementById('result').textContent = err
+            console.error(err)
+          }).finally(() => {
+            run()
+          })
+       }
+
           document.getElementById('startButton').addEventListener('click', () => {
             navigator.mediaDevices.getUserMedia({
             audio: false,
@@ -86,14 +100,7 @@
             videoElement.onloadedmetadata = function (e) {
               videoElement.play();
             };
-            codeReader.decodeFromVideoElement(videoElement).then((result) => {
-              alert(result.text);
-              document.getElementById('result').textContent = result.text
-              console.log('Found QR code!', result)
-            }).catch((err) => {
-              document.getElementById('result').textContent = err
-              console.error(err)
-            })
+            
             // const track = stream.getVideoTracks()[0];
             // const info = track.getSettings();
             // codeReader.decodeFromVideoDevice(info.deviceId, 'video', (result, err) => {
@@ -106,6 +113,7 @@
             //     document.getElementById('result').textContent = err
             //   }
             // })
+            run();
           })
           .catch((err) => {
             console.error(err)
