@@ -163,7 +163,7 @@
         }
 
         getVideoStream({
-            ...config,
+            facingMode: "environment",
             aspectRatio: 0.75,
         }).then((stream) => {
             videoElement.srcObject = stream;
