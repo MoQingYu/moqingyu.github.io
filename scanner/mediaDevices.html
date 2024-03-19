@@ -49,84 +49,137 @@
     <h2>媒体查询（getUserMedia）</h2>
     <pre id="media-info"></pre>
     <script>
-        const videoList = document.getElementById('video-list');
-        const listJson = document.getElementById('list-json');
-        const videoSelect = document.getElementById('video-select');
-        const video = document.getElementById('video');
-        const infoNode = document.getElementById('media-info');
-        const errorNode = document.getElementById('error-json');
+        // const videoList = document.getElementById('video-list');
+        // const listJson = document.getElementById('list-json');
+        // const videoSelect = document.getElementById('video-select');
+        // const video = document.getElementById('video');
+        // const infoNode = document.getElementById('media-info');
+        // const errorNode = document.getElementById('error-json');
 
-        const config = {
-            aspectRatio: 0.75,
-            // width: { min: 720, ideal: 1280, max: 1920 },
-            width: { min: 480, ideal: 720, max: 1280 },
+        // const config = {
+        //     aspectRatio: 0.75,
+        //     // width: { min: 720, ideal: 1280, max: 1920 },
+        //     width: { min: 480, ideal: 720, max: 1280 },
+        // }
+
+        // navigator.mediaDevices.enumerateDevices()
+        //     .then(devices => {
+        //         let videoListStr = '';
+        //         let optionStr = '';
+        //         let newList = [];
+        //         let i = 1;
+        //         devices.forEach(device => {
+        //             if (device.kind === 'videoinput') {
+        //                 newList.push(device);
+        //                 videoListStr += `
+        //                     <tr>
+        //                         <td>${device.kind}</td>
+        //                         <td>${device.label}</td>
+        //                         <td>${device.deviceId}</td>
+        //                     </tr>
+        //                 `
+        //                 optionStr += `
+        //                     <option value="${device.deviceId}">${device.label || `摄像头${i}`}</option>
+        //                     `
+        //                 i++
+        //             }
+        //         })
+        //         videoList.innerHTML = videoListStr;
+        //         videoSelect.innerHTML = optionStr;
+        //         listJson.innerHTML = JSON.stringify(newList, null, 2)
+        //     })
+
+        // videoSelect.onchange = function(e) {
+        //     const deviceId = e.target.value;
+        //     const constraints = {
+        //         audio: false,
+        //         video: {
+        //             deviceId: {
+        //                 exact: deviceId
+        //             },
+        //             ...config
+        //         }
+        //     }
+        //     navigator.mediaDevices.getUserMedia(constraints)
+        //         .then(stream => {
+        //             const track = stream.getVideoTracks();
+        //             const info = track[0].getSettings();
+        //             infoNode.innerHTML = JSON.stringify(info, null, 2)
+        //             video.srcObject = stream;
+        //             video.play();
+
+        //         }).catch(err => {
+        //             errorNode.innerHTML = JSON.stringify(err, null, 2)
+        //         })
+        // }
+        // navigator.mediaDevices.getUserMedia({
+        //     audio: false,
+        //     video: {
+        //         facingMode: "environment",
+        //         ...config
+        //     }
+        // }).then((stream) => {
+        //     const track = stream.getVideoTracks();
+        //     const info = track[0].getSettings();
+        //     videoSelect.value = info.deviceId;
+        //     infoNode.innerHTML = JSON.stringify(info, null, 2)
+        //     video.srcObject = stream;
+        //     video.play();
+        // })
+
+        const getStream = async(params) => {
+            const constraints = [
+                {width: {min: 720, ideal: 1280, max: 1920}},
+                {width: {min: 480, ideal: 720, max: 1280}}        
+            ]
+            for (let i = 0; i < constraints.length; i++) {
+                try {
+                    const stream = await navigator.mediaDevices.getUserMedia({
+                        audio: false,
+                        video: {
+                            aspectRatio: 0.75,
+                            width: {min: 1080, ideal: 1280, max: 1920},
+                            ...params
+                        }
+                    })
+                    return stream
+                } catch (error) {}
+            }
         }
 
-        navigator.mediaDevices.enumerateDevices()
-            .then(devices => {
-                let videoListStr = '';
-                let optionStr = '';
-                let newList = [];
-                let i = 1;
-                devices.forEach(device => {
-                    if (device.kind === 'videoinput') {
-                        newList.push(device);
-                        videoListStr += `
-                            <tr>
-                                <td>${device.kind}</td>
-                                <td>${device.label}</td>
-                                <td>${device.deviceId}</td>
-                            </tr>
-                        `
-                        optionStr += `
-                            <option value="${device.deviceId}">${device.label || `摄像头${i}`}</option>
-                            `
-                        i++
+        // getStream()
+
+        const getCamera = () => {
+            if (!navigator.mediaDevices) {
+                return
+            }
+            navigator.mediaDevices.enumerateDevices().then((devices) => {
+                const videoDevices = devices.filter((device) => device.kind === "videoinput")
+                if (videoDevices.length > 1) {
+                    return videoDevices;
+                }
+                return []
+            }).then(async (videoDevices) => {
+                let list = [];
+                for (let i = 0, len = videoDevices.length; i < len; i++) {
+                    try {
+                        await navigator.mediaDevices.getUserMedia({
+                            audio: false,
+                            video: {
+                                deviceId: videoDevices[i].deviceId,
+                                facingMode: "environment"
+                            }
+                        })
+                        list.push(videoDevices[i])
+                    } catch (error) {
+                        
                     }
-                })
-                videoList.innerHTML = videoListStr;
-                videoSelect.innerHTML = optionStr;
-                listJson.innerHTML = JSON.stringify(newList, null, 2)
+                }
+                alert(JSON.stringify(list, null, 2))
             })
 
-        videoSelect.onchange = function(e) {
-            const deviceId = e.target.value;
-            const constraints = {
-                audio: false,
-                video: {
-                    deviceId: {
-                        exact: deviceId
-                    },
-                    ...config
-                }
-            }
-            navigator.mediaDevices.getUserMedia(constraints)
-                .then(stream => {
-                    const track = stream.getVideoTracks();
-                    const info = track[0].getSettings();
-                    infoNode.innerHTML = JSON.stringify(info, null, 2)
-                    video.srcObject = stream;
-                    video.play();
-
-                }).catch(err => {
-                    errorNode.innerHTML = JSON.stringify(err, null, 2)
-                })
         }
-        navigator.mediaDevices.getUserMedia({
-            audio: false,
-            video: {
-                facingMode: "environment",
-                ...config
-            }
-        }).then((stream) => {
-            const track = stream.getVideoTracks();
-            const info = track[0].getSettings();
-            videoSelect.value = info.deviceId;
-            infoNode.innerHTML = JSON.stringify(info, null, 2)
-            video.srcObject = stream;
-            video.play();
-        })
-
+        getCamera()
     </script>
 </body>
 </html>
