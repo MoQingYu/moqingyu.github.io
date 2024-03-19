@@ -54,6 +54,11 @@
         const videoSelect = document.getElementById('video-select');
         const video = document.getElementById('video');
         const infoNode = document.getElementById('media-info');
+
+        const config = {
+            width: { min: 720, ideal: 1280, max: 1920 },
+        }
+
         navigator.mediaDevices.enumerateDevices()
             .then(devices => {
                 let videoListStr = '';
@@ -84,8 +89,12 @@
         videoSelect.onchange = function(e) {
             const deviceId = e.target.value;
             const constraints = {
+                audio: false,
                 video: {
-                    deviceId: deviceId
+                    deviceId: {
+                        exact: deviceId
+                    },
+                    ...config
                 }
             }
             navigator.mediaDevices.getUserMedia(constraints)
@@ -99,7 +108,7 @@
         }
         navigator.mediaDevices.getUserMedia({
             audio: false,
-            video: true
+            video: config
         }).then((stream) => {
             const track = stream.getVideoTracks();
             const info = track[0].getSettings();
