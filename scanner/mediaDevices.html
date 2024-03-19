@@ -163,14 +163,14 @@
                 let list = [];
                 for (let i = 0, len = videoDevices.length; i < len; i++) {
                     try {
-                        await navigator.mediaDevices.getUserMedia({
+                        const stream = await navigator.mediaDevices.getUserMedia({
                             audio: false,
-                            video: {
-                                deviceId: videoDevices[i].deviceId,
-                                facingMode: "environment"
-                            }
+                            video: { deviceId: videoDevices[i].deviceId}
                         })
-                        list.push(videoDevices[i])
+                        const info = stream.getTracks()[0].getSettings();
+                        if(info.facingMode === "environment") {
+                            list.push(videoDevices)
+                        }
                     } catch (error) {
                         
                     }
