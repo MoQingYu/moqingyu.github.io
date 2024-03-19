@@ -29,11 +29,11 @@
 </head>
 <body>
     <h2>媒体查询（enumerateDevices）</h2>
-    <select id="video-select" placehoder="请选择摄像头">
+    <!-- <select id="video-select" placehoder="请选择摄像头">
         
-    </select>
+    </select> -->
     <video id="video" width="100%" height="800px"></video>
-    <table>
+    <!-- <table>
         <thead>
             <tr>
                 <th>kind</th>
@@ -45,7 +45,7 @@
         </tbody>
     </table>
     <pre id="list-json"></pre>
-    <pre id="error-json"></pre>
+    <pre id="error-json"></pre> -->
     <h2>媒体查询（getUserMedia）</h2>
     <pre id="media-info"></pre>
     <script>
@@ -53,8 +53,8 @@
         // const listJson = document.getElementById('list-json');
         // const videoSelect = document.getElementById('video-select');
         // const video = document.getElementById('video');
-        // const infoNode = document.getElementById('media-info');
-        // const errorNode = document.getElementById('error-json');
+        const infoNode = document.getElementById('media-info');
+        const errorNode = document.getElementById('error-json');
 
         // const config = {
         //     aspectRatio: 0.75,
@@ -127,61 +127,42 @@
         //     video.play();
         // })
 
-        const getStream = async(params) => {
+        const getVideoStream = (params) => {
             const constraints = [
-                {width: {min: 720, ideal: 1280, max: 1920}},
-                {width: {min: 480, ideal: 720, max: 1280}}        
+                { width: { min: 720, ideal: 1280, max: 1920 } },
+                { width: { min: 480, ideal: 720, max: 1280 } },
+                { width: { min: 320, ideal: 640, max: 720 } },
             ]
-            for (let i = 0; i < constraints.length; i++) {
-                try {
-                    const stream = await navigator.mediaDevices.getUserMedia({
-                        audio: false,
-                        video: {
-                            aspectRatio: 0.75,
-                            width: {min: 1080, ideal: 1280, max: 1920},
-                            ...params
-                        }
-                    })
-                    return stream
-                } catch (error) {}
-            }
-        }
-
-        // getStream()
-
-        const getCamera = () => {
-            if (!navigator.mediaDevices) {
-                return
-            }
-            navigator.mediaDevices.enumerateDevices().then((devices) => {
-                const videoDevices = devices.filter((device) => device.kind === "videoinput")
-                return videoDevices
-            }).then(async (videoDevices) => {
-                let list = [];
-                for (let i = 0, len = videoDevices.length; i < len; i++) {
+            return new Promise<MediaStream>(async (resolve, reject) => {
+                for (let i = 0; i < constraints.length; i++) {
                     try {
-                        const item = videoDevices[i];
+                        const constraint = constraints[i]
                         const stream = await navigator.mediaDevices.getUserMedia({
                             audio: false,
-                            video: { deviceId: item.deviceId}
+                            video: {
+                                ...params,
+                                ...constraint,
+                            }
                         })
-                        const info = stream.getTracks()[0].getSettings();
-                        if(info.facingMode === "environment") {
-                            list.push({
-                                deviceId: info.deviceId,
-                                label: item.label,
-                                facingMode: info.facingMode
-                            })
-                        }
-                    } catch (error) {
-                        
+                        resolve(stream)
+                        return
+                    } catch (error) { 
                     }
                 }
-                alert(JSON.stringify(list, null, 2))
+                reject(new Error("无法获取摄像头"))
             })
-
         }
-        getCamera()
+
+        getVideoStream({
+            ...config,
+            aspectRatio: 0.75,
+        }).then((stream) => {
+            videoElement.srcObject = stream;
+            videoElement.play();
+            const track = stream.getVideoTracks()[0];
+            const info = track.getSettings();
+            infoNode.innerHTML = JSON.stringify(info, null, 2)
+        })
     </script>
 </body>
 </html>
