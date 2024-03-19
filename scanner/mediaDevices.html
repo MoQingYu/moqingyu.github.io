@@ -29,11 +29,11 @@
 </head>
 <body>
     <h2>媒体查询（enumerateDevices）</h2>
-    <!-- <select id="video-select" placehoder="请选择摄像头">
+    <select id="video-select" placehoder="请选择摄像头">
         
-    </select> -->
+    </select>
     <video id="video" width="100%" height="800px"></video>
-    <!-- <table>
+    <table>
         <thead>
             <tr>
                 <th>kind</th>
@@ -45,89 +45,24 @@
         </tbody>
     </table>
     <pre id="list-json"></pre>
-    <pre id="error-json"></pre> -->
+    <pre id="error-json"></pre>
     <h2>媒体查询（getUserMedia）</h2>
     <pre id="mate-info"></pre>
     <pre id="media-info"></pre>
     <script>
-        // const videoList = document.getElementById('video-list');
-        // const listJson = document.getElementById('list-json');
-        // const videoSelect = document.getElementById('video-select');
-        // const video = document.getElementById('video');
+        const videoList = document.getElementById('video-list');
+        const listJson = document.getElementById('list-json');
+        const videoSelect = document.getElementById('video-select');
+        const video = document.getElementById('video');
         const infoNode = document.getElementById('media-info');
         const mateNode = document.getElementById('mate-info');
-        // const errorNode = document.getElementById('error-json');
+        const errorNode = document.getElementById('error-json');
 
-        // const config = {
-        //     aspectRatio: 0.75,
-        //     // width: { min: 720, ideal: 1280, max: 1920 },
-        //     width: { min: 480, ideal: 720, max: 1280 },
-        // }
-
-        // navigator.mediaDevices.enumerateDevices()
-        //     .then(devices => {
-        //         let videoListStr = '';
-        //         let optionStr = '';
-        //         let newList = [];
-        //         let i = 1;
-        //         devices.forEach(device => {
-        //             if (device.kind === 'videoinput') {
-        //                 newList.push(device);
-        //                 videoListStr += `
-        //                     <tr>
-        //                         <td>${device.kind}</td>
-        //                         <td>${device.label}</td>
-        //                         <td>${device.deviceId}</td>
-        //                     </tr>
-        //                 `
-        //                 optionStr += `
-        //                     <option value="${device.deviceId}">${device.label || `摄像头${i}`}</option>
-        //                     `
-        //                 i++
-        //             }
-        //         })
-        //         videoList.innerHTML = videoListStr;
-        //         videoSelect.innerHTML = optionStr;
-        //         listJson.innerHTML = JSON.stringify(newList, null, 2)
-        //     })
-
-        // videoSelect.onchange = function(e) {
-        //     const deviceId = e.target.value;
-        //     const constraints = {
-        //         audio: false,
-        //         video: {
-        //             deviceId: {
-        //                 exact: deviceId
-        //             },
-        //             ...config
-        //         }
-        //     }
-        //     navigator.mediaDevices.getUserMedia(constraints)
-        //         .then(stream => {
-        //             const track = stream.getVideoTracks();
-        //             const info = track[0].getSettings();
-        //             infoNode.innerHTML = JSON.stringify(info, null, 2)
-        //             video.srcObject = stream;
-        //             video.play();
-
-        //         }).catch(err => {
-        //             errorNode.innerHTML = JSON.stringify(err, null, 2)
-        //         })
-        // }
-        // navigator.mediaDevices.getUserMedia({
-        //     audio: false,
-        //     video: {
-        //         facingMode: "environment",
-        //         ...config
-        //     }
-        // }).then((stream) => {
-        //     const track = stream.getVideoTracks();
-        //     const info = track[0].getSettings();
-        //     videoSelect.value = info.deviceId;
-        //     infoNode.innerHTML = JSON.stringify(info, null, 2)
-        //     video.srcObject = stream;
-        //     video.play();
-        // })
+        const config = {
+            aspectRatio: 0.75,
+            // width: { min: 720, ideal: 1280, max: 1920 },
+            width: { min: 480, ideal: 720, max: 1280 },
+        }
 
         let mateArr;
         const getVideoStream = async (params) => {
@@ -157,21 +92,55 @@
             }
         }
 
-        const run = async () => {
-            const stream = await getVideoStream({ facingMode: "environment" });
+        const run = async (deviceId) => {
+            const config = deviceId ? { deviceId: { ideal: deviceId } } : { facingMode: "environment" }
+            const stream = await getVideoStream({ 
+                ...config,
+                aspectRatio: 0.75
+            });
             if(stream) {
                 const track = stream.getVideoTracks();
                 const info = track[0].getSettings();
-                mateNode.innerHTML = JSON.stringify(mateArr, null, 2)
                 infoNode.innerHTML = JSON.stringify(info, null, 2)
                 video.srcObject = stream;
                 video.play();
             }
             mateNode.innerHTML = JSON.stringify(mateArr, null, 2);
-            
         }
 
-        run();
+        navigator.mediaDevices.enumerateDevices()
+            .then(devices => {
+                let videoListStr = '';
+                let optionStr = '';
+                let newList = [];
+                let i = 1;
+                devices.forEach(device => {
+                    if (device.kind === 'videoinput') {
+                        newList.push(device);
+                        videoListStr += `
+                            <tr>
+                                <td>${device.kind}</td>
+                                <td>${device.label}</td>
+                                <td>${device.deviceId}</td>
+                            </tr>
+                        `
+                        optionStr += `
+                            <option value="${device.deviceId}">${device.label || `摄像头${i}`}</option>
+                            `
+                        i++
+                    }
+                })
+                videoList.innerHTML = videoListStr;
+                videoSelect.innerHTML = optionStr;
+                listJson.innerHTML = JSON.stringify(newList, null, 2)
+            })
+
+        videoSelect.onchange = function(e) {
+            const deviceId = e.target.value;
+            run(deviceId)
+        }
+
+        run()
     </script>
 </body>
 </html>
