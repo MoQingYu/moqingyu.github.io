@@ -169,7 +169,10 @@
                         })
                         const info = stream.getTracks()[0].getSettings();
                         if(info.facingMode === "environment") {
-                            list.push(videoDevices)
+                            list.push({
+                                ...videoDevices[i],
+                                facingMode: info.facingMode
+                            })
                         }
                     } catch (error) {
                         
