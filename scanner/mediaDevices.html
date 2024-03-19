@@ -36,7 +36,7 @@
         </tbody>
     </table>
     <h2>媒体查询（getUserMedia）</h2>
-    <div id="total"></div>
+    <div id="media-info"></div>
     <h2>支持的约束条件</h2>
     <pre id="supported-constraints"></pre>
     <script>
@@ -57,13 +57,13 @@
                 })
             })
 
-        const total = document.getElementById('total');
+        const info = document.getElementById('media-info');
         navigator.mediaDevices.getUserMedia({
             audio: false,
             video: true
         }).then((stream) => {
             const track = stream.getVideoTracks();
-            total.innerHTML = `后置摄像头数量：${track.length}`
+            info.innerHTML = JSON.stringify(track[0].getSettings(), null, 2)
         })
 
         let supportedConstraints = navigator.mediaDevices.getSupportedConstraints()
