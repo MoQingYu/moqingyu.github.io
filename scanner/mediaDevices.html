@@ -4,9 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        table {
+            width: 100%;
+            border-spacing: 0;
+            border-collapse: initial;
+            border: 1px solid black;
+            border-right: none;
+            border-bottom: none;
+        }
+        th, td {
+            border: 1px solid black;
+            border-top: none;
+            border-left: none;
+            padding: 10px;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-    <h2>媒体查询</h2>
+    <h2>媒体查询（enumerateDevices）</h2>
     <table>
         <thead>
             <tr>
@@ -18,8 +35,11 @@
         <tbody id="video-list">
         </tbody>
     </table>
+    <h2>媒体查询（getUserMedia）</h2>
+    <div id="total"></div>
     <script>
         const videoList = document.getElementById('video-list');
+
         navigator.mediaDevices.enumerateDevices()
             .then(devices => {
                 devices.forEach(device => {
@@ -34,14 +54,16 @@
                     }
                 })
             })
+
+        const total = document.getElementById('total');
         navigator.mediaDevices.getUserMedia({
             audio: false,
             video: {
-                facingMode: "environment"
+                facingMode: { exact: "environment" }
             }
         }).then((stream) => {
             const track = stream.getVideoTracks();
-            alert(track.length)
+            total.innerHTML = `后置摄像头数量：${track.length}`
         })
     </script>
 </body>
