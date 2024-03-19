@@ -24,6 +24,10 @@
 </head>
 <body>
     <h2>媒体查询（enumerateDevices）</h2>
+    <select id="video-select" placehoder="请选择摄像头">
+        
+    </select>
+    <video id="video" width="100%" height="500px" style="object-fit: cover;"></video>
     <table>
         <thead>
             <tr>
@@ -41,22 +45,48 @@
     <script>
         const videoList = document.getElementById('video-list');
         const listJson = document.getElementById('list-json');
+        const videoSelect = document.getElementById('video-select');
+        const video = document.getElementById('video');
         navigator.mediaDevices.enumerateDevices()
             .then(devices => {
+                let videoListStr = '';
+                let optionStr = '';
+                let newList = [];
                 devices.forEach(device => {
                     if (device.kind === 'videoinput') {
-                        videoList.innerHTML += `
+                        videoListStr += `
                             <tr>
                                 <td>${device.kind}</td>
                                 <td>${device.label}</td>
                                 <td>${device.deviceId}</td>
                             </tr>
                         `
+                        optionStr += `
+                            <option value="${device.deviceId}">${device.label}</option>
+                        `
                     }
                 })
-                const newList = devices.filter(device => device.kind === 'videoinput');
+                videoList.innerHTML = videoListStr;
+                videoSelect.innerHTML = optionStr;
                 listJson.innerHTML = JSON.stringify(newList, null, 2)
             })
+
+        videoSelect.onchange = function(e) {
+            const deviceId = e.target.value;
+            const constraints = {
+                video: {
+                    deviceId: deviceId
+                }
+            }
+            navigator.mediaDevices.getUserMedia(constraints)
+                .then(stream => {
+                    const track = stream.getVideoTracks();
+                    const info = track[0].getSettings();
+                    info.innerHTML = JSON.stringify(info, null, 2)
+                    video.srcObject = stream;
+                    video.play();
+                })
+        }
 
         const info = document.getElementById('media-info');
         navigator.mediaDevices.getUserMedia({
@@ -64,7 +94,11 @@
             video: true
         }).then((stream) => {
             const track = stream.getVideoTracks();
-            info.innerHTML = JSON.stringify(track[0].getSettings(), null, 2)
+            const info = track[0].getSettings();
+            videoSelect.setAttribute('value', info.deviceId);
+            info.innerHTML = JSON.stringify(info, null, 2)
+            video.srcObject = stream;
+            video.play();
         })
 
     </script>
