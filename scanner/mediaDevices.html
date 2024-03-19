@@ -168,7 +168,8 @@
                         const info = stream.getTracks()[0].getSettings();
                         if(info.facingMode === "environment") {
                             list.push({
-                                ...item,
+                                deviceId: info.deviceId,
+                                label: item.label,
                                 facingMode: info.facingMode
                             })
                         }
