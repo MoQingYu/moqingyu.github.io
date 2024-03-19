@@ -52,6 +52,7 @@
                 let videoListStr = '';
                 let optionStr = '';
                 let newList = [];
+                let i = 1;
                 devices.forEach(device => {
                     if (device.kind === 'videoinput') {
                         videoListStr += `
@@ -62,8 +63,9 @@
                             </tr>
                         `
                         optionStr += `
-                            <option value="${device.deviceId}">${device.label}</option>
-                        `
+                            <option value="${device.deviceId}">${device.label || `摄像头${i}`}</option>
+                            `
+                        i++
                     }
                 })
                 videoList.innerHTML = videoListStr;
