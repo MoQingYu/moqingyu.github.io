@@ -155,22 +155,20 @@
             }
             navigator.mediaDevices.enumerateDevices().then((devices) => {
                 const videoDevices = devices.filter((device) => device.kind === "videoinput")
-                if (videoDevices.length > 1) {
-                    return videoDevices;
-                }
-                return []
+                return videoDevices
             }).then(async (videoDevices) => {
                 let list = [];
                 for (let i = 0, len = videoDevices.length; i < len; i++) {
                     try {
+                        const item = videoDevices[i];
                         const stream = await navigator.mediaDevices.getUserMedia({
                             audio: false,
-                            video: { deviceId: videoDevices[i].deviceId}
+                            video: { deviceId: item.deviceId}
                         })
                         const info = stream.getTracks()[0].getSettings();
                         if(info.facingMode === "environment") {
                             list.push({
-                                ...videoDevices[i],
+                                ...item,
                                 facingMode: info.facingMode
                             })
                         }
