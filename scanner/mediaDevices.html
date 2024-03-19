@@ -35,13 +35,12 @@
         <tbody id="video-list">
         </tbody>
     </table>
+    <pre id="list-json"></pre>
     <h2>媒体查询（getUserMedia）</h2>
     <div id="media-info"></div>
-    <h2>支持的约束条件</h2>
-    <pre id="supported-constraints"></pre>
     <script>
         const videoList = document.getElementById('video-list');
-
+        const listJson = document.getElementById('list-json');
         navigator.mediaDevices.enumerateDevices()
             .then(devices => {
                 devices.forEach(device => {
@@ -55,6 +54,8 @@
                         `
                     }
                 })
+                const newList = devices.filter(device => device.kind === 'videoinput');
+                listJson.innerHTML = JSON.stringify(newList, null, 2)
             })
 
         const info = document.getElementById('media-info');
@@ -65,9 +66,6 @@
             const track = stream.getVideoTracks();
             info.innerHTML = JSON.stringify(track[0].getSettings(), null, 2)
         })
-
-        let supportedConstraints = navigator.mediaDevices.getSupportedConstraints()
-        document.getElementById('supported-constraints').textContent = JSON.stringify(supportedConstraints, null, 2)
 
     </script>
 </body>
