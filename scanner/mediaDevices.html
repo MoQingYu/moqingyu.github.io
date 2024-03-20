@@ -60,13 +60,7 @@
         const infoNode = document.getElementById('media-info');
         const mateNode = document.getElementById('mate-info');
         const errorNode = document.getElementById('error-json');
-
-        const config = {
-            aspectRatio: 0.75,
-            // width: { min: 720, ideal: 1280, max: 1920 },
-            width: { min: 480, ideal: 720, max: 1280 },
-        }
-
+        
         let mateArr;
         const getVideoStream = async (params) => {
             const constraints = [
@@ -90,7 +84,8 @@
                         }
                     })
                     return stream;
-                } catch (error) { 
+                } catch (error) {
+                    alert(error.message)
                 }
             }
         }
