@@ -60,13 +60,14 @@
         const infoNode = document.getElementById('media-info');
         const mateNode = document.getElementById('mate-info');
         const errorNode = document.getElementById('error-json');
-        
+
         let mateArr;
         const getVideoStream = async (params) => {
             const constraints = [
                 { width: { min: 720, ideal: 1280, max: 1920 } },
                 { width: { min: 480, ideal: 720, max: 1280 } },
                 { width: { min: 320, ideal: 640, max: 720 } },
+                { },
             ]
             mateArr = [];
             for (let i = 0; i < constraints.length; i++) {
