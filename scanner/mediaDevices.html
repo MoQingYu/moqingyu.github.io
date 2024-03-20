@@ -95,8 +95,6 @@
 
         const run = async (deviceId) => {
             const config = deviceId ? { deviceId: { ideal: deviceId } } : { facingMode: "environment" }
-            trackCache && trackCache.stop()
-            (streamCache && trackCache) && streamCache.removeTrack(trackCache);
             const stream = await getVideoStream({ 
                 ...config,
                 aspectRatio: 0.75
@@ -109,6 +107,10 @@
                 infoNode.innerHTML = JSON.stringify(info, null, 2)
                 video.srcObject = stream;
                 video.play();
+                setTimeout(() => {
+                    track.stop();
+                    stream.removeTrack(track)
+                }, 3000)
             }
             mateNode.innerHTML = JSON.stringify(mateArr, null, 2);
         }
