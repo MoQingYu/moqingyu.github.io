@@ -96,8 +96,7 @@
         const run = async (deviceId) => {
             const config = deviceId ? { deviceId: { ideal: deviceId } } : { facingMode: "environment" }
             const stream = await getVideoStream({ 
-                ...config,
-                aspectRatio: 0.75
+                ...config
             });
             streamCache = stream;
             if(stream) {
