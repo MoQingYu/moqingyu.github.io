@@ -73,55 +73,37 @@
       
        const videoElement = document.getElementById('video')
 
-       const run = () => {
-          codeReader.decodeFromVideoElement(videoElement).then((result) => {
-            alert(result.text);
-            document.getElementById('result').textContent = result.text
-            console.log('Found QR code!', result)
-            
-          }).catch((err) => {
-            document.getElementById('result').textContent = err
-            console.error(err)
-          }).finally(() => {
-            run()
-          })
-       }
-
-          document.getElementById('startButton').addEventListener('click', () => {
-            navigator.mediaDevices.getUserMedia({
-              audio: false,
-              video: {
-                  facingMode: { exact: "environment" },
-                  aspectRatio: 0.75,
-                  width: {min: 720, ideal: 1280, max: 1920},
+        document.getElementById('startButton').addEventListener('click', () => {
+          navigator.mediaDevices.getUserMedia({
+            audio: false,
+            video: {
+                facingMode: { exact: "environment" },
+                aspectRatio: 0.75,
+                width: {min: 720, ideal: 1280, max: 1920},
+            }
+        }).then((stream) => {
+            codeReader.decodeFromStream(stream, videoElement, (result, err) => {
+              if (result) {
+                console.log(result)
+                document.getElementById('result').textContent = result.text
               }
-          }).then((stream) => {
-              videoElement.srcObject = stream;
-              videoElement.onloadedmetadata = function (e) {
-                videoElement.play();
-              };
-              codeReader.decodeFromVideoElementContinuously(videoElement, (result, err) => {
-                if (result) {
-                  console.log(result)
-                  document.getElementById('result').textContent = result.text
-                }
-                if (err && !(err instanceof ZXing.NotFoundException)) {
-                  console.error(err)
-                  document.getElementById('result').textContent = err
-                }
-              })
+              if (err && !(err instanceof ZXing.NotFoundException)) {
+                console.error(err)
+                document.getElementById('result').textContent = err
+              }
             })
-            .catch((err) => {
-              console.error(err)
-            })
-
-          document.getElementById('resetButton').addEventListener('click', () => {
-            codeReader.reset()
-            document.getElementById('result').textContent = '';
-            console.log('Reset.')
+          })
+          .catch((err) => {
+            console.error(err)
           })
 
+        document.getElementById('resetButton').addEventListener('click', () => {
+          codeReader.reset()
+          document.getElementById('result').textContent = '';
+          console.log('Reset.')
         })
+
+      })
     })
   </script>
 
