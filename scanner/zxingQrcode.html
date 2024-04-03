@@ -79,7 +79,7 @@
             video: {
                 facingMode: { exact: "environment" },
                 aspectRatio: 0.75,
-                width: {min: 720, ideal: 1280, max: 1920},
+                width: {min: 720, ideal: 1080, max: 1280},
             }
         }).then((stream) => {
             codeReader.decodeFromStream(stream, videoElement, (result, err) => {
@@ -91,7 +91,7 @@
                 console.error(err)
                 document.getElementById('result').textContent = err
               }
-            })
+            }) 
           })
           .catch((err) => {
             console.error(err)
