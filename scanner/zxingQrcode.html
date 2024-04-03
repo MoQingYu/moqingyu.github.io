@@ -66,6 +66,7 @@
       const widthRatio = 0.8;
       const heightRatio = 0.6;
       let canvasConfig;
+      let ctx;
 
       let ele = (function () {
         const canvasElement = document.createElement('canvas');
@@ -120,11 +121,12 @@
           canvasConfig = null;
           const loop = () => {
             try {
-              let ctx;
-              try {
-                ctx = ele.getContext('2d', { willReadFrequently: true });
-              } catch (e) {
-                ctx = ele.getContext('2d');
+              if (!ctx) {
+                try {
+                  ctx = ele.getContext('2d', { willReadFrequently: true });
+                } catch (e) {
+                  ctx = ele.getContext('2d');
+                }
               }
               if (!canvasConfig) {
                 var coreWidth = videoElement.videoWidth * widthRatio;
