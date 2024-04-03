@@ -60,6 +60,22 @@
       console.log('ZXing code reader initialized')
       console.log('Video element', codeReader)
       
+      codeReader.drawFrameOnCanvas = (
+        srcElement,
+        dimensions,
+        canvasElementContext = codeReader.canvasElementContext
+      ) => {
+        var coreWidth = srcElement.videoWidth * 0.9;
+        var coreHeight = srcElement.videoHeight * 0.6;
+        // 核心区域的起始点坐标
+        var startX = (srcElement.videoWidth - coreWidth) / 2;
+        var startY = (srcElement.videoHeight - coreHeight) / 2;
+
+        // 在 Canvas 上绘制核心区域
+        // 这里将核心区域绘制到了 Canvas 的左上角，并且缩放到了 Canvas 的大小
+        canvasElementContext.drawImage(srcElement, startX, startY, coreWidth, coreHeight, 0, 0, coreWidth, coreHeight);
+      }
+
        const videoElement = document.getElementById('video')
        const capturedElement = document.getElementById('captured')
 
