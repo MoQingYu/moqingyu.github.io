@@ -84,10 +84,25 @@
             })
             setInterval(() => {
               try {
-                codeReader.drawFrameOnCanvas(videoElement);
-                const ctx = codeReader.getCaptureCanvasContext(videoElement);
-                var dataURL = ctx.toDataURL();
-                capturedElement.src = dataURL;
+                const ele = codeReader.createCaptureCanvas(videoElement);
+                let ctx;
+                try {
+                  ctx = elem.getContext('2d', {willReadFrequently: true});
+                } catch (e) {
+                  ctx = elem.getContext('2d');
+                }
+                ctx.drawImage(
+                  videoElement,
+                  0,
+                  0,
+                  videoElement.videoWidth,
+                  videoElement.videoHeight,
+                  0,
+                  0,
+                  videoElement.videoWidth,
+                  videoElement.videoHeight,
+                );
+                capturedElement.src = ele.toDataURL();
               } catch (error) {
                 alert(error.message)
               }
