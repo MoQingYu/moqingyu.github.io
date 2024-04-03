@@ -87,9 +87,9 @@
                 const ele = codeReader.createCaptureCanvas(videoElement);
                 let ctx;
                 try {
-                  ctx = elem.getContext('2d', {willReadFrequently: true});
+                  ctx = ele.getContext('2d', {willReadFrequently: true});
                 } catch (e) {
-                  ctx = elem.getContext('2d');
+                  ctx = ele.getContext('2d');
                 }
                 ctx.drawImage(
                   videoElement,
