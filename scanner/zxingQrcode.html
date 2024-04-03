@@ -82,11 +82,15 @@
                 document.getElementById('result').textContent = err
               }
             })
-            setTimeout(() => {
-              codeReader.drawFrameOnCanvas(videoElement);
-              const ctx = codeReader.getCaptureCanvasContext(videoElement);
-              var dataURL = ctx.toDataURL();
-              capturedElement.src = dataURL;
+            setInterval(() => {
+              try {
+                codeReader.drawFrameOnCanvas(videoElement);
+                const ctx = codeReader.getCaptureCanvasContext(videoElement);
+                var dataURL = ctx.toDataURL();
+                capturedElement.src = dataURL;
+              } catch (error) {
+                alert(error.message)
+              }
             }, 60)
           })
           .catch((err) => {
