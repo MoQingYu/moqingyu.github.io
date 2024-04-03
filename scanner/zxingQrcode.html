@@ -59,12 +59,14 @@
       const codeReader = new ZXing.BrowserMultiFormatReader()
       const videoElement = document.getElementById('video')
       const capturedElement = document.getElementById('captured')
-
       codeReader.drawFrameOnCanvas = function(
         srcElement,
         dimensions,
         canvasElementContext = this.canvasElementContext
       ) {
+
+        let canv = codeReader.getCaptureCanvasContext(videoElement)
+
         var coreWidth = srcElement.videoWidth * 0.9;
         var coreHeight = srcElement.videoHeight * 0.6;
         // 核心区域的起始点坐标
@@ -73,12 +75,8 @@
 
         // 在 Canvas 上绘制核心区域
         // 这里将核心区域绘制到了 Canvas 的左上角，并且缩放到了 Canvas 的大小
-        canvasElementContext.drawImage(srcElement, startX, startY, coreWidth, coreHeight, 0, 0, coreWidth, coreHeight);
+        canv.drawImage(srcElement, startX, startY, coreWidth, coreHeight, 0, 0, coreWidth, coreHeight);
       }
-
-
-      console.log('ZXing code reader initialized')
-      console.log('Video element', codeReader)
 
         document.getElementById('startButton').addEventListener('click', () => {
           navigator.mediaDevices.getUserMedia({
@@ -89,16 +87,16 @@
                 width: {min: 720, ideal: 1080, max: 1280},
             }
         }).then((stream) => {
-            codeReader.decodeFromStream(stream, videoElement, (result, err) => {
-              if (result) {
-                console.log(result)
-                document.getElementById('result').textContent = result.text
-              }
-              if (err && !(err instanceof ZXing.NotFoundException)) {
-                console.error(err)
-                document.getElementById('result').textContent = err
-              }
-            })
+            // codeReader.decodeFromStream(stream, videoElement, (result, err) => {
+            //   if (result) {
+            //     console.log(result)
+            //     document.getElementById('result').textContent = result.text
+            //   }
+            //   if (err && !(err instanceof ZXing.NotFoundException)) {
+            //     console.error(err)
+            //     document.getElementById('result').textContent = err
+            //   }
+            // })
             const run = () => {
               try {
                 const ele = codeReader.createCaptureCanvas(videoElement);
