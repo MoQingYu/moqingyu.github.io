@@ -153,7 +153,7 @@
               // 这里将核心区域绘制到了 Canvas 的左上角，并且缩放到了 Canvas 的大小
               ctx.drawImage(videoElement, startX, startY, coreWidth, coreHeight, 0, 0, coreWidth, coreHeight);
               capturedElement.src = ele.toDataURL();
-              const luminanceSource = new ZXing.HTMLCanvasElementLuminanceSource(canvas);
+              const luminanceSource = new ZXing.HTMLCanvasElementLuminanceSource(ele);
               const hybridBinarizer = new ZXing.HybridBinarizer(luminanceSource);
               const bitMap = new ZXing.BinaryBitmap(hybridBinarizer)
               const result = codeReader.decodeBitmap(bitMap)
