@@ -91,15 +91,15 @@
                 } catch (e) {
                   ctx = ele.getContext('2d');
                 }
-                var coreWidth = videoElement.width * 0.9;
-                var coreHeight = videoElement.height * 0.6;
+                var coreWidth = videoElement.videoWidth * 0.9;
+                var coreHeight = videoElement.videoHeight * 0.6;
                 // 核心区域的起始点坐标
-                var startX = (videoElement.width - coreWidth) / 2;
-                var startY = (videoElement.height - coreHeight) / 2;
+                var startX = (videoElement.videoWidth - coreWidth) / 2;
+                var startY = (videoElement.videoHeight - coreHeight) / 2;
 
                 // 在 Canvas 上绘制核心区域
                 // 这里将核心区域绘制到了 Canvas 的左上角，并且缩放到了 Canvas 的大小
-                ctx.drawImage(videoElement, startX, startY, coreWidth, coreHeight, 0, 0, videoElement.width, videoElement.height);
+                ctx.drawImage(videoElement, startX, startY, coreWidth, coreHeight, 0, 0, coreWidth, coreHeight);
                 capturedElement.src = ele.toDataURL();
               } catch (error) {
                 alert(error.message)
