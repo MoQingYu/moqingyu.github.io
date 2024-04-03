@@ -100,7 +100,7 @@
                 // 在 Canvas 上绘制核心区域
                 // 这里将核心区域绘制到了 Canvas 的左上角，并且缩放到了 Canvas 的大小
                 ctx.drawImage(videoElement, startX, startY, coreWidth, coreHeight, 0, 0, videoElement.width, videoElement.height);
-                capturedElement.src = ctx.toDataURL();
+                capturedElement.src = ele.toDataURL();
               } catch (error) {
                 alert(error.message)
               }
