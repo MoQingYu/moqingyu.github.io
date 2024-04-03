@@ -67,8 +67,9 @@
       const heightRatio = 0.6;
       let canvasConfig;
       let ctx;
+      let ele;
 
-      let ele = (function (mediaElement) {
+      const createCanvas = (mediaElement) => {
         const canvasElement = document.createElement('canvas');
 
         let width;
@@ -96,7 +97,7 @@
         canvasElement.height = height;
 
         return canvasElement;
-      })(videoElement);
+      }
 
       document.getElementById('startButton').addEventListener('click', () => {
         navigator.mediaDevices.getUserMedia({
@@ -123,6 +124,9 @@
           canvasConfig = null;
           const loop = () => {
             try {
+              if(!ele) {
+                ele = createCanvas(videoElement);
+              }
               if (!ctx) {
                 try {
                   ctx = ele.getContext('2d', { willReadFrequently: true });
