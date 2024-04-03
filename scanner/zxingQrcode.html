@@ -65,7 +65,7 @@
         canvasElementContext = this.canvasElementContext
       ) {
 
-        let canv = codeReader.getCaptureCanvasContext(videoElement)
+        let canv = canvasElementContext || codeReader.getCaptureCanvasContext(videoElement)
 
         var coreWidth = srcElement.videoWidth * 0.9;
         var coreHeight = srcElement.videoHeight * 0.6;
