@@ -57,14 +57,14 @@
     window.addEventListener('load', function () {
       let selectedDeviceId;
       const codeReader = new ZXing.BrowserMultiFormatReader()
-      console.log('ZXing code reader initialized')
-      console.log('Video element', codeReader)
-      
-      codeReader.drawFrameOnCanvas = (
+      const videoElement = document.getElementById('video')
+      const capturedElement = document.getElementById('captured')
+
+      codeReader.drawFrameOnCanvas = function(
         srcElement,
         dimensions,
-        canvasElementContext = codeReader.canvasElementContext
-      ) => {
+        canvasElementContext = this.canvasElementContext
+      ) {
         var coreWidth = srcElement.videoWidth * 0.9;
         var coreHeight = srcElement.videoHeight * 0.6;
         // 核心区域的起始点坐标
@@ -76,8 +76,9 @@
         canvasElementContext.drawImage(srcElement, startX, startY, coreWidth, coreHeight, 0, 0, coreWidth, coreHeight);
       }
 
-       const videoElement = document.getElementById('video')
-       const capturedElement = document.getElementById('captured')
+
+      console.log('ZXing code reader initialized')
+      console.log('Video element', codeReader)
 
         document.getElementById('startButton').addEventListener('click', () => {
           navigator.mediaDevices.getUserMedia({
