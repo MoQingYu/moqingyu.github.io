@@ -40,7 +40,7 @@
       <div>
         <video id="video" width="100%" height="600px" style="border: 1px solid gray; object-fit: cover;"></video>
       </div>
-      <img id="captured" width="100%" height="600px" style="border: 1px solid gray; object-fit: cover; display:none;">
+      <img id="captured" width="100%">
       <div id="sourceSelectPanel" style="display:none">
         <label for="sourceSelect">Change video source:</label>
         <select id="sourceSelect" style="max-width:400px">
@@ -103,10 +103,11 @@
                   videoElement.videoHeight,
                 );
                 capturedElement.src = ele.toDataURL();
+                alert("Captured", capturedElement.src)
               } catch (error) {
                 alert(error.message)
               }
-            }, 60)
+            }, 1000)
           })
           .catch((err) => {
             console.error(err)
