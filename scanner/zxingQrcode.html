@@ -65,120 +65,136 @@
 
       const widthRatio = 0.8;
       const heightRatio = 0.6;
+      let canvasConfig;
 
-      let ele = (function() {
+      let ele = (function () {
         const canvasElement = document.createElement('canvas');
 
-          let width;
-          let height;
+        let width;
+        let height;
 
-          if (typeof mediaElement !== 'undefined') {
-            if (mediaElement instanceof HTMLVideoElement) {
-              width = mediaElement.videoWidth;
-              height = mediaElement.videoHeight;
-            } else if (mediaElement instanceof HTMLImageElement) {
-              width = mediaElement.naturalWidth || mediaElement.width;
-              height = mediaElement.naturalHeight || mediaElement.height;
-            }
+        if (typeof mediaElement !== 'undefined') {
+          if (mediaElement instanceof HTMLVideoElement) {
+            width = mediaElement.videoWidth;
+            height = mediaElement.videoHeight;
+          } else if (mediaElement instanceof HTMLImageElement) {
+            width = mediaElement.naturalWidth || mediaElement.width;
+            height = mediaElement.naturalHeight || mediaElement.height;
           }
+        }
 
-          width = Math.round(width * widthRatio);
-          height = Math.round(height * heightRatio);
+        width = Math.round(width * widthRatio);
+        height = Math.round(height * heightRatio);
 
-          canvasElement.style.width = width + 'px';
-          canvasElement.style.height = height + 'px';
+        canvasElement.style.width = width + 'px';
+        canvasElement.style.height = height + 'px';
 
-          canvasElement.width = width;
-          canvasElement.height = height;
+        canvasElement.width = width;
+        canvasElement.height = height;
 
-          return canvasElement;
+        return canvasElement;
       })();
 
-        document.getElementById('startButton').addEventListener('click', () => {
-          navigator.mediaDevices.getUserMedia({
-            audio: false,
-            video: {
-                facingMode: { exact: "environment" },
-                aspectRatio: 0.75,
-                width: {min: 720, ideal: 1080, max: 1280},
-            }
+      document.getElementById('startButton').addEventListener('click', () => {
+        navigator.mediaDevices.getUserMedia({
+          audio: false,
+          video: {
+            facingMode: { exact: "environment" },
+            aspectRatio: 0.75,
+            width: { min: 720, ideal: 1080, max: 1280 },
+          }
         }).then((stream) => {
-            // codeReader.decodeFromStream(stream, videoElement, (result, err) => {
-            //   if (result) {
-            //     console.log(result)
-            //     document.getElementById('result').textContent = result.text
-            //   }
-            //   if (err && !(err instanceof ZXing.NotFoundException)) {
-            //     console.error(err)
-            //     document.getElementById('result').textContent = err
-            //   }
-            // })
+          // codeReader.decodeFromStream(stream, videoElement, (result, err) => {
+          //   if (result) {
+          //     console.log(result)
+          //     document.getElementById('result').textContent = result.text
+          //   }
+          //   if (err && !(err instanceof ZXing.NotFoundException)) {
+          //     console.error(err)
+          //     document.getElementById('result').textContent = err
+          //   }
+          // })
 
-            videoElement.srcObject = stream
-            videoElement.play()
-
-            const loop = () => {
+          videoElement.srcObject = stream
+          videoElement.play()
+          canvasConfig = null;
+          const loop = () => {
+            try {
+              let ctx;
               try {
-                let ctx;
-                  try {
-                    ctx = ele.getContext('2d', {willReadFrequently: true});
-                  } catch (e) {
-                    ctx = ele.getContext('2d');
-                  }
-                  var coreWidth = videoElement.videoWidth * widthRatio;
-                  var coreHeight = videoElement.videoHeight * heightRatio;
-                  // 核心区域的起始点坐标
-                  var startX = (videoElement.videoWidth - coreWidth) / 2;
-                  var startY = (videoElement.videoHeight - coreHeight) / 2;
-
-                  // 在 Canvas 上绘制核心区域
-                  // 这里将核心区域绘制到了 Canvas 的左上角，并且缩放到了 Canvas 的大小
-                  ctx.drawImage(videoElement, startX, startY, coreWidth, coreHeight, 0, 0, coreWidth, coreHeight);
-                  capturedElement.src = ele.toDataURL();
-                  const luminanceSource = new ZXing.HTMLCanvasElementLuminanceSource(canvas);
-                  const hybridBinarizer = new ZXing.HybridBinarizer(luminanceSource); 
-                  const bitMap = new ZXing.BinaryBitmap(hybridBinarizer)
-                  const result = codeReader.decodeBitmap(bitMap)
-                if (result) {
-                  document.getElementById('result').textContent = result.text
-                }
-                setTimeout(loop, 100);
+                ctx = ele.getContext('2d', { willReadFrequently: true });
               } catch (e) {
-                  alert(e.message)
-                  setTimeout(loop, 100);
+                ctx = ele.getContext('2d');
               }
-            };
-
-            loop();
-
-
-
-            const run = () => {
-              try {
-                let ctx;
-                try {
-                  ctx = ele.getContext('2d', {willReadFrequently: true});
-                } catch (e) {
-                  ctx = ele.getContext('2d');
-                }
+              if (!canvasConfig) {
                 var coreWidth = videoElement.videoWidth * widthRatio;
                 var coreHeight = videoElement.videoHeight * heightRatio;
                 // 核心区域的起始点坐标
                 var startX = (videoElement.videoWidth - coreWidth) / 2;
                 var startY = (videoElement.videoHeight - coreHeight) / 2;
-
-                // 在 Canvas 上绘制核心区域
-                // 这里将核心区域绘制到了 Canvas 的左上角，并且缩放到了 Canvas 的大小
-                ctx.drawImage(videoElement, startX, startY, coreWidth, coreHeight, 0, 0, coreWidth, coreHeight);
-                capturedElement.src = ele.toDataURL();
-              } catch (error) {
-                alert(error.message)
-              } finally {
-                requestAnimationFrame(run)
+                canvasConfig = {
+                  coreWidth,
+                  coreHeight,
+                  startX,
+                  startY
+                };
               }
+
+              const {
+                coreWidth,
+                coreHeight,
+                startX,
+                startY
+              } = canvasConfig;
+
+              // 在 Canvas 上绘制核心区域
+              // 这里将核心区域绘制到了 Canvas 的左上角，并且缩放到了 Canvas 的大小
+              ctx.drawImage(videoElement, startX, startY, coreWidth, coreHeight, 0, 0, coreWidth, coreHeight);
+              capturedElement.src = ele.toDataURL();
+              const luminanceSource = new ZXing.HTMLCanvasElementLuminanceSource(canvas);
+              const hybridBinarizer = new ZXing.HybridBinarizer(luminanceSource);
+              const bitMap = new ZXing.BinaryBitmap(hybridBinarizer)
+              const result = codeReader.decodeBitmap(bitMap)
+              if (result) {
+                document.getElementById('result').textContent = result.text
+              }
+              setTimeout(loop, 100);
+            } catch (e) {
+              alert(e.message)
+              setTimeout(loop, 100);
             }
-            requestAnimationFrame(run)
-          })
+          };
+
+          loop();
+
+
+
+          const run = () => {
+            try {
+              let ctx;
+              try {
+                ctx = ele.getContext('2d', { willReadFrequently: true });
+              } catch (e) {
+                ctx = ele.getContext('2d');
+              }
+              var coreWidth = videoElement.videoWidth * widthRatio;
+              var coreHeight = videoElement.videoHeight * heightRatio;
+              // 核心区域的起始点坐标
+              var startX = (videoElement.videoWidth - coreWidth) / 2;
+              var startY = (videoElement.videoHeight - coreHeight) / 2;
+
+              // 在 Canvas 上绘制核心区域
+              // 这里将核心区域绘制到了 Canvas 的左上角，并且缩放到了 Canvas 的大小
+              ctx.drawImage(videoElement, startX, startY, coreWidth, coreHeight, 0, 0, coreWidth, coreHeight);
+              capturedElement.src = ele.toDataURL();
+            } catch (error) {
+              alert(error.message)
+            } finally {
+              requestAnimationFrame(run)
+            }
+          }
+          requestAnimationFrame(run)
+        })
           .catch((err) => {
             console.error(err)
           })
